@@ -1,2 +1,5 @@
-.bash*
+.bash_history
+.cache
+.gitconfig
 .ssh
+site.retry

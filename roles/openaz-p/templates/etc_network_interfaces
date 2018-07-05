@@ -1,0 +1,21 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto {{ vm_net_name }}
+iface {{ vm_net_name }} inet {{ vm_net_type }}
+    address {{ vm_net_ipaddr }}
+    netmask {{ vm_net_netmask }}
+    network {{ vm_net_network }}
+    broadcast {{ vm_net_broadcast }}
+    gateway {{ vm_net_gateway }}
+    mtu {{ vm_net_mtu }}
+    dns-nameservers 150.135.238.4 150.135.238.30
+    dns-search library.arizona.edu
+    

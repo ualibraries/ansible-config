@@ -1,0 +1,14 @@
+---
+# file: roles/openaz/handlers/main.yml
+
+- name: reconfigure manifold
+  shell: "/usr/local/bin/manifold-ctl reconfigure"
+
+
+- name: add manifold admin
+  shell: "/usr/local/bin/manifold-api manifold:user:create:admin[\
+             \"{{ manifold_admin_email }}\",\
+             \"{{ manifold_admin_password }}\",\
+             \"{{ manifold_admin_fname }}\",\
+             \"{{ manifold_admin_lname }}\"\
+             ]"
