@@ -1,0 +1,46 @@
+---
+# file: group_vars/openaz/vars.yml
+
+# Service parameters.
+
+service_name: Open Arizona
+service_tag: openaz
+service_id: 5001
+
+# Virtualization platform parameters.
+
+vmware_vcenter_host: vc1.library.arizona.edu
+vmware_vcenter_admin_username: administrator@vsphere.local
+vmware_vcenter_admin_password: "{{ vmware_vcenter_admin_password_v }}"
+vmware_vcenter_validate_certs: no
+
+vmware_guest_datacenter: LCU
+vmware_guest_cluster: SMPLV-C1
+vmware_guest_template: "{{ service_tag }}-tmpl"
+vmware_guest_folder: "/LCU/vm/Service VMs"
+vmware_guest_name: "{{ vm_hostname }}"
+vmware_guest_network_name: "Public Network (199)"
+vmware_guest_device_type: vmxnet3
+
+# Administrative group and user.
+
+group_openaz_name: "{{ service_tag }}"
+group_openaz_gid: "{{ service_id }}"
+
+user_openaz_name: "{{ service_tag }}-admin"
+user_openaz_uid: "{{ service_id }}"
+user_openaz_comment: "{{ service_name }} Administrator"
+user_openaz_shell: "/bin/bash"
+user_openaz_home: "/home/{{ service_tag }}-admin"
+user_openaz_group: "{{ group_openaz_name }}"
+
+user_openaz_key_rsa: "{{ user_openaz_key_rsa_v }}"
+user_openaz_key_rsa_public: |
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCflpi3VIRY01aFJNsBPYoiBKF4t6xCKpyjE4FQmf+e58NyJEBNj6b43oUX8FnuKtavmN1+lSdnouZGD67HYlGnRXE6ywJYtRwA5BBjtl92WnIy4RXv/K7r8meZmCBos5zgTSPhBYZKfguFbbFHuzGCwTI1y7bLjC06XbxPf7/juYdbCuSRJ0vpT5L43BIZw5G5qXhNcEU09evhmzZz9Xy8M25QShaHCHt0dcBwJo8FPwcVmHyYshxHzCWf4X+TGOmPDmHxSQuMFvVt/ckjAxNiNp6z5OOAxH52xlQetUNrVVHb9i6LkxcG/lKucuxZRnY48EnuhUUTB3A4V4V0GYDNtGhHHqgP4yajwiLPQrFVYQlK496ZXJlT9ZkT+TxkdS3PxSC1RjxMOZOZOGCIbjp2pWZgHo9JQVviV0HfVT84KZ5xBoof1DmYeFZ/v2ybF5yar+iz/tlI/aluqOvQmYsVSmiH5sH8k8QCN9LN5L6Bsrk4ZIQUeEYJoUoPTGkmCHSmAQ0hdQWti7ltocUDXet7vewCwop1CXjBc5w3BxuhqMiP1P3J+uriICpQqmB8H/knKmiU3khovWeejSA9XoPEsKKEAaqQdPr+Ends3jt6FFzxW6QXUh4K4UIucOx/XdsXDSLgyC6KmR3xigKtJOeyC4H9Tjy/dW1LLcoIIhrZTw== openaz-admin@ansible1
+
+# Manifold application administrator.
+
+manifold_admin_email: mgsimpson@email.arizona.edu
+manifold_admin_password: "{{ manifold_admin_password_v }}"
+manifold_admin_fname: Mike
+manifold_admin_lname: Simpson

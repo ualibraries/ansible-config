@@ -1,0 +1,55 @@
+---
+# file: roles/openaz-p/tasks/main.yml
+
+# Provision virtual machine.
+
+- name: Clone service host from template.
+  delegate_to: localhost
+  become: no
+  vmware_guest:
+
+    # vcenter connection parameters
+    hostname: "{{ vmware_vcenter_host }}"
+    username: "{{ vmware_vcenter_admin_username }}"
+    password: "{{ vmware_vcenter_admin_password }}"
+    validate_certs: "{{ vmware_vcenter_validate_certs }}"
+
+    # vmware deployment parameters
+    datacenter: "{{ vmware_guest_datacenter }}"
+    cluster: "{{ vmware_guest_cluster }}"
+    template: "{{ vmware_guest_template }}"
+    folder: "{{ vmware_guest_folder }}"
+    name: "{{ vmware_guest_name }}"
+    networks:
+    - name: "{{ vmware_guest_network_name }}"
+      type: "{{ vm_net_type }}"
+      ip: "{{ vm_net_ipaddr }}"
+      netmask: "{{ vm_net_netmask }}"
+      gateway: "{{ vm_net_gateway }}"
+    customization:
+      hostname: "{{ vm_hostname }}"
+      domain: "{{ vm_domain }}"
+
+    # vm state
+    state: poweredon
+    wait_for_ip_address: yes
+
+- name: Set ssh host keys.
+  copy:
+    content: "{{ item.content }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { content: "{{ vm_hostkey_ecdsa }}", dest: "/etc/ssh/ssh_host_ecdsa_key", mode: "0400" }
+    - { content: "{{ vm_hostkey_ecdsa_public }}", dest: "/etc/ssh/ssh_host_ecdsa_key.pub", mode: "0444" }
+    - { content: "{{ vm_hostkey_ed25519 }}", dest: "/etc/ssh/ssh_host_ed25519_key", mode: "0400" }
+    - { content: "{{ vm_hostkey_ed25519_public }}", dest: "/etc/ssh/ssh_host_ed25519_key.pub", mode: "0444" }
+    - { content: "{{ vm_hostkey_rsa }}", dest: "/etc/ssh/ssh_host_rsa_key", mode: "0400" }
+    - { content: "{{ vm_hostkey_rsa_public }}", dest: "/etc/ssh/ssh_host_rsa_key.pub", mode: "0444" }
+  notify: restart sshd
+
+- name: Fix incomplete VMware network customization.
+  template:
+    src: etc_network_interfaces
+    dest: /etc/network/interfaces
+  notify: bounce interface

@@ -1,0 +1,10 @@
+---
+# file: roles/openaz-p/handlers/main.yml
+
+- name: restart sshd
+  systemd:
+    name: sshd
+    state: restarted
+
+- name: bounce interface
+  shell: "ifdown {{ vm_net_name }} && sleep 1 && ifup {{ vm_net_name }}"

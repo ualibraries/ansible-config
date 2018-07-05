@@ -1,0 +1,47 @@
+---
+# file: site_openaz.yml
+
+#
+# Service configurations for the Open Arizona service hosts; see comments in "site.yml"
+# for further information.
+#
+# Note that because of chicken-and-egg issues, there are two separate plays in this
+# playbook: one that provisions the virtual machine, and then a second that configures
+# that virtual machine after provisioning. You can differentiate the plays by using
+# the "provision" and "configure" tags, e.g.:
+#
+#     (run this first:)
+#     $ ansible-playbook site.yml --inventory _testing \
+#                                 --limit openaz \
+#                                 --tags provision
+#
+#     (run this second:)
+#     $ ansible-playbook site.yml --inventory _testing \
+#                                 --limit openaz \
+#                                 --tags configure
+#
+# The above commands will first provision, then configure, any testing hosts
+# in the openaz group.
+#
+
+- name: Provision Open Arizona virtual machines
+  hosts: openaz
+  remote_user: ansible-admin
+  become: yes
+  become_user: root
+  gather_facts: false
+  roles:
+    - openaz-p
+  tags:
+    - provision
+
+- name: Apply service configuration to the Open Arizona service hosts
+  hosts: openaz
+  remote_user: ansible-admin
+  become: yes
+  become_user: root
+  gather_facts: true
+  roles:
+    - openaz
+  tags:
+    - configure

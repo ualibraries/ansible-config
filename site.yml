@@ -1,0 +1,30 @@
+---
+# file: site.yml
+
+# 
+# Top-level configuration file for all Ansible-managed inventory and services.
+#
+# The directory and file structures in this repository are based on:
+# 
+#     http://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html
+#
+# Basically:
+#
+#     *   Each Ansible-managed service has its own service-level playbook,
+#         "site_[service].yml". The main "site.yml" file 
+#         just imports all of the individual service playbooks.
+#
+#     *   Ansible-managed hosts are listed in the inventory files, "_[type]",
+#         and grouped by service. Currently-defined inventory types are
+#         "testing", "staging", "production", and "support".
+#
+# This structure allows you to invoke playbooks based on service and type,
+# e.g.:
+#
+#     $ ansible-playbook -i _testing -l openaz site.yml
+#
+# The above command would invoke the Open Arizona service configuration
+# against the testing hosts participating in the Open Arizona service.
+#
+
+- import_playbook: site_openaz.yml
