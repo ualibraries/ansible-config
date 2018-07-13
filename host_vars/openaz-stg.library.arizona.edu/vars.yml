@@ -1,0 +1,38 @@
+---
+# file: host_vars/openaz-stg.library.arizona.edu/vars.yml
+
+# Environment parameters.
+
+environment_name: Staging
+environment_tag: stg
+
+manifold_package_location: https://storage.googleapis.com/manifold-dist/debian
+manifold_package_version: manifold_1.0.1-1_amd64.deb
+manifold_external_url: http://openaz-stg.library.arizona.edu
+
+# Virtual machine network configuration.
+
+vm_hostname: "{{ service_tag }}-{{ environment_tag }}"
+vm_domain: library.arizona.edu
+vm_fqdn: "{{ vm_hostname }}.{{ vm_domain }}"
+
+vm_net_name: ens160
+vm_net_type: static
+vm_net_ipaddr: 150.135.174.14
+vm_net_netmask: 255.255.255.0
+vm_net_network: 150.135.174.0
+vm_net_broadcast: 150.135.174.255
+vm_net_gateway: 150.135.174.1
+vm_net_mtu: 9000
+
+# Virtual machine ssh keys.
+
+vm_hostkey_ecdsa: "{{ vm_hostkey_ecdsa_v }}"
+vm_hostkey_ecdsa_public: |
+  ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEV/x4yee6rhq+TxFvrkKOI1e+sAx4Pv/Ud2pxYNIfC80+cT/wUn4xxLesnY/rjz8TIoioZ6bx3vfaaFVEOsWO8=
+vm_hostkey_ed25519: "{{ vm_hostkey_ed25519_v }}"
+vm_hostkey_ed25519_public: |
+  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN0inhCmkHJ22TfRfXA4KPQjfWZ7qmRSyv01ibdIsj8V
+vm_hostkey_rsa: "{{ vm_hostkey_rsa_v }}"
+vm_hostkey_rsa_public: |
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDvTLu04JcAMr+VcCWMFphqiMti1p9eRtdHiowrTxSDDaM1+ez8ODTGBs9kA+ZC75mqtnY9UkQhWpTHBV/a76w8YSOfiOUoDwOgP2uEKnoHU6M6MWDYHXxdUife+n6a80BJ/ie2tIICe4IrnD8ZsIryvuscaSqwIY9j7rVQMHl6RvnlaUYb0Vsu1/JhpEPqe7MYKoPE7AYcFkSPpkmFg3qfcbE4XQnrcbSUF23Tb5iETXtq7KmFv9DCidXZm/OijbBnK0wzjgFVeqdb5EiglXB7Zf9IyJhcJZcPfES4+yWiu5tq7+H0ilhP1iqd2hdwhXbMcnDQKvq6kmWUfHV/LQFl
