@@ -1,9 +1,7 @@
 ---
-# file: roles/openaz-p/tasks/main.yml
+# file: roles/_provision/tasks/main.yml
 
-# Provision virtual machine.
-
-- name: Clone service host from template.
+- name: Clone service node from virtual machine template.
   delegate_to: localhost
   become: no
   vmware_guest:
@@ -34,6 +32,12 @@
     state: poweredon
     wait_for_ip_address: yes
 
+- name: Correct incomplete network customization.
+  template:
+    src: etc_network_interfaces
+    dest: /etc/network/interfaces
+  notify: bounce interface
+
 - name: Set ssh host keys.
   copy:
     content: "{{ item.content }}"
@@ -48,8 +52,4 @@
     - { content: "{{ vm_hostkey_rsa_public }}", dest: "/etc/ssh/ssh_host_rsa_key.pub", mode: "0444" }
   notify: restart sshd
 
-- name: Fix incomplete VMware network customization.
-  template:
-    src: etc_network_interfaces
-    dest: /etc/network/interfaces
-  notify: bounce interface
+- meta: flush_handlers

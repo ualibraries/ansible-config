@@ -6,40 +6,40 @@
 
 Mike Simpson is to blame for this.
 
-Some day, this will hopefully expand to control some non-trivial proportion of our
-inventory and service offerings; starting out small by managing the Open Arizona
-service hosts.
+Some day, this will hopefully expand to control some non-trivial
+proportion of our inventory and service offerings; starting out small
+by managing the Open Arizona service hosts. Once this stabilizes, you
+should generally expect to find the master branch checked out into
+ansible1.library.arizona.edu:/etc/ansible. That instance of Ansible
+will probably wind up being mostly for checking the whole fleet for
+deviations from the official configuration, and reporting those
+differences to some mailing list or another, probably out of a
+cron job of some kind.
 
-Once this stabilizes, you would expect to find the master branch checked out into
-ansible1.library.arizona.edu:/etc/ansible; for now, I've got the "initial_pass"
-feature branch checked out on that host instead -- so I'm doing development in
-Eclipse et al. on my laptop in the feature branch, pushing it up to Github, then
-pulling it down to ansible1 to test.
+## Running local.
 
-Yes, non-local feature branches are usually a really bad idea. :)
+To run Ansible on your local development environment, you could do
+something like this (if you're on a Mac, and already have Homebrew
+installed) while at the root of your Github repository clone:
 
--mgs, 6/20/2018
+    % brew update
+    % brew install pyenv
+    % brew install pyenv-virtualenv
 
-## Putting a service under Ansible management.
+        [ add shim lines into shell startup files per output ]
 
-### Establish DNS entries for service hosts.
+    % pyenv install 2.7.15
+    % pyenv virtualenv 2.7.15 ual-ansible-config
+    % pyenv local ual-ansible-config
+    % pip install ansible
+    % pip install pyvmomi
 
-fill out the spreadsheet in Box
+That should get you running on a sandboxed Python with latest-version
+Ansible plus module dependencies installed.
 
-add A/PTR entries on plutarch
+# TBD.
 
-### Add service configuration to Ansible.
+More documentation.
 
-pick a service tag
+Remember, this is Mike's fault.
 
-add hosts to inventory files under a group named by the service tag
-
-add a group subdirectory under group_vars, again using the service tag, with vars and vault files
-
-add hosts subdirectories under host_vars, with vars and vault files
-
-add a role subdirectory under roles, using the service tag, and stubbing out files, handlers, tasks, templates
-
-create a "site_[service].yml" file
-
-add an import to site.yml

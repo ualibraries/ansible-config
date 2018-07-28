@@ -1,0 +1,10 @@
+---
+# file: roles/_provision/handlers/main.yml
+
+- name: bounce interface
+  shell: "ifdown {{ vm_net_name }} && sleep 1 && ifup {{ vm_net_name }}"
+
+- name: restart sshd
+  systemd:
+    name: sshd
+    state: restarted

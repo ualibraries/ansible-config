@@ -9,11 +9,6 @@ service_id: 5001
 
 # Virtualization platform parameters.
 
-vmware_vcenter_host: vc1.library.arizona.edu
-vmware_vcenter_admin_username: administrator@vsphere.local
-vmware_vcenter_admin_password: "{{ vmware_vcenter_admin_password_v }}"
-vmware_vcenter_validate_certs: no
-
 vmware_guest_datacenter: LCU
 vmware_guest_cluster: SMPLV-C1
 vmware_guest_template: "{{ service_tag }}-tmpl"
@@ -40,7 +35,7 @@ user_openaz_key_rsa_public: |
 
 # Manifold application administrator.
 
-manifold_admin_email: mgsimpson@email.arizona.edu
+manifold_admin_email: LBRY-OPS-LCU@email.arizona.edu
 manifold_admin_password: "{{ manifold_admin_password_v }}"
-manifold_admin_fname: Mike
-manifold_admin_lname: Simpson
+manifold_admin_fname: Manifold
+manifold_admin_lname: Superuser
