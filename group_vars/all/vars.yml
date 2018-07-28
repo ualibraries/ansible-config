@@ -1,0 +1,10 @@
+---
+# file: group_vars/all/vars.yml
+
+# Virtualization platform parameters.
+
+vmware_vcenter_host: vc1.library.arizona.edu
+vmware_vcenter_admin_username: administrator@vsphere.local
+vmware_vcenter_admin_password: "{{ vmware_vcenter_admin_password_v }}"
+vmware_vcenter_validate_certs: no
+

@@ -32,6 +32,17 @@
     - { content: "{{ user_openaz_key_rsa }}", dest: "{{ user_openaz_home }}/.ssh/id_rsa", mode: "0400" }
     - { content: "{{ user_openaz_key_rsa_public }}", dest: "{{ user_openaz_home }}/.ssh/id_rsa.pub", mode: "0444" }
 
+- name: Mount Manifold NAS shares.
+  mount:
+    src: "{{ item.src }}"
+    path: "{{ item.path }}"
+    fstype: nfs
+    opts: nfsvers=3,proto=tcp,intr,hard,noatime,nodiratime,timeo=100,retrans=2,acdirmin=120,acdirmax=240
+    state: mounted
+  loop:
+    - { src: "qnas1.library.arizona.edu:/{{vm_hostname}}-manifold-var", path: "/var/opt/manifold" }
+    - { src: "qnas1.library.arizona.edu:/{{vm_hostname}}-manifold-logs", path: "/var/log/manifold" }
+    
 - name: Install Manifold package.
   apt:
     deb: "{{ manifold_package_location }}/{{ manifold_package_version }}"

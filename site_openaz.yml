@@ -2,46 +2,61 @@
 # file: site_openaz.yml
 
 #
-# Service configurations for the Open Arizona service hosts; see comments in "site.yml"
-# for further information.
+# Service configurations for the Open Arizona service nodes; see
+# comments in the "site.yml" file for further information.
 #
-# Note that because of chicken-and-egg issues, there are two separate plays in this
-# playbook: one that provisions the virtual machine, and then a second that configures
-# that virtual machine after provisioning. You can differentiate the plays by using
-# the "provision" and "configure" tags, e.g.:
+# There are two separate plays in this playbook that use tags to
+# invoke various roles on the service nodes:
 #
-#     (run this first:)
-#     $ ansible-playbook site.yml --inventory _testing \
+# *   A "deploy" play that provisions the node, applies common
+#     configurations, and then applies service-specific
+#     configurations, resulting in a running service node;
+#
+# *   A "remove" play that first quiesces, then removes the
+#     service node.
+#
+# Note that you can also use the "deploy" play to verify that
+# running nodes are in the proper configured state.
+#
+# Sample usage:
+#
+#     (To create or verify service nodes:)
+#     $ ansible-playbook site.yml --ask-vault-pass \
+#                                 --inventory _testing \
 #                                 --limit openaz \
-#                                 --tags provision
+#                                 --tags deploy
 #
-#     (run this second:)
-#     $ ansible-playbook site.yml --inventory _testing \
+#     (To delete service nodes:)
+#     $ ansible-playbook site.yml --ask-vault-pass \
+#                                 --inventory _testing \
 #                                 --limit openaz \
-#                                 --tags configure
+#                                 --tags remove
 #
-# The above commands will first provision, then configure, any testing hosts
-# in the openaz group.
+# In the above commands, you would specify "_staging" or "_production"
+# for the inventory file to affect those service environments.
 #
 
-- name: Provision Open Arizona virtual machines
+- name: Deploy Open Arizona service nodes
   hosts: openaz
   remote_user: ansible-admin
   become: yes
   become_user: root
   gather_facts: false
   roles:
-    - openaz-p
+    - _provision
+    - _common
+    - openaz
   tags:
-    - provision
+    - deploy
 
-- name: Apply service configuration to the Open Arizona service hosts
+- name: Remove Open Arizona service nodes
   hosts: openaz
   remote_user: ansible-admin
   become: yes
   become_user: root
   gather_facts: true
   roles:
-    - openaz
+    - openaz-quiesce
+    - _remove
   tags:
-    - configure
+    - remove
