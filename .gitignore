@@ -1,6 +1,8 @@
 .bash_history
+.bash_profile
 .cache
 .gitconfig
+.pyenv
 .python-version
 .ssh
 site.retry
