@@ -1,0 +1,30 @@
+---
+# file: host_vars/centos7-baseline.library.arizona.edu/vars.yml
+
+# Virtual machine network configuration.
+
+vm_hostname: centos7-baseline
+vm_domain: library.arizona.edu
+vm_fqdn: "{{ vm_hostname }}.{{ vm_domain }}"
+
+vm_net_name: ens192
+vm_net_type: static
+vm_net_ipaddr: 10.130.155.10
+vm_net_netmask: 255.255.255.0
+vm_net_network: 10.130.155.0
+vm_net_broadcast: 10.130.155.255
+vm_net_gateway: 10.130.155.1
+vm_net_mtu: 9000
+
+# Virtual machine ssh keys.
+
+vm_hostkey_ecdsa: "{{ vm_hostkey_ecdsa_v }}"
+vm_hostkey_ecdsa_public: |
+  ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGypgRc1jcnMbG6sl8Un4CdXKzhIwKe60GdrQJM4zurkG6ONvoNc9jR694ybtK/b8hJnbXS4CkcigHCcbT6GdP8=
+vm_hostkey_ed25519: "{{ vm_hostkey_ed25519_v }}"
+vm_hostkey_ed25519_public: |
+  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOwbbZtCRw+VUd9h27xvGlEPWIWfn2zdrCL/U84iEAUT
+vm_hostkey_rsa: "{{ vm_hostkey_rsa_v }}"
+vm_hostkey_rsa_public: |
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHnPPd0PA8ef88ermpe/Z9GZfPwHTyV1hdtfLMcrbqVasVHu/40s2B+Lyp/D8DMqlUe21CHv+A3LHh3h73wI/PDRfftmswbUw/6BRViq0mTa2hadA7PDyYFw7BAagkpZ9yHoH+B1P9we6/ABnAQmzr8MN+rywyiycjmqJD9Yz5MuD+6NwjMFNMPbuDQOgYuGHZNEv1Gmnadlf7L0aywgHkc3pj9wtSOYR0Z8QpvyzQMiLb2Qvez98PvPsm5hdNKprPMzI2hCsn4M0ogFg+Bau+ACuLMnwwZyIPfbyhE7SsdpRiex9psP9xTuQkZQ3oAKrBwIiKfbIYOopjsAGQq9jr
+

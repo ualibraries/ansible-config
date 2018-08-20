@@ -1,0 +1,17 @@
+---
+# file: site_baseline.yml
+
+#
+# Used to apply the "_common" role to our baseline client nodes,
+# which then become the virtual machine templates used for our
+# service nodes.
+
+- name: Apply common configuration to baseline nodes
+  hosts: baseline
+  remote_user: ansible-admin
+  become: yes
+  become_user: root
+  gather_facts: true
+  roles:
+    - _common
+

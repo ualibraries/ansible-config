@@ -1,13 +1,5 @@
 ---
 # file: roles/_common/tasks/main.yml
 
-- name: Install common packages.
-  apt:
-    name: "{{ packages }}"
-  vars:
-    packages:
-    - emacs
-    - nfs-common
-    - open-vm-tools
-    - sysstat
-    - zsh
+- import_tasks: standard-packages.yml
+- import_tasks: splunk-forwarder.yml
