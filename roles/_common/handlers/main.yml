@@ -1,2 +1,17 @@
 ---
 # file: roles/_common/handlers/main.yml
+
+- name: accept splunk license
+  command: /opt/splunkforwarder/bin/splunk start --accept-license --no-prompt
+
+- name: enable splunk start-on-boot
+  command: /opt/splunkforwarder/bin/splunk enable boot-start
+
+- name: add splunk forwarding server
+  command: /opt/splunkforwarder/bin/splunk add forward-server splunk.library.arizona.edu:9997 -auth {{ splunkf_admin_username }}:{{ splunkf_admin_password }}
+
+- name: add splunk deployment server
+  command: /opt/splunkforwarder/bin/splunk set deploy-poll splunk.library.arizona.edu:8089 -auth {{ splunkf_admin_username }}:{{ splunkf_admin_password }}
+
+- name: restart splunk forwarder
+  command: /opt/splunkforwarder/bin/splunk restart

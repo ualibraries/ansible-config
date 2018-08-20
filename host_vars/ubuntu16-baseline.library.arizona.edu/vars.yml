@@ -1,0 +1,32 @@
+---
+# file: host_vars/ubuntu16-baseline.library.arizona.edu/vars.yml
+
+# Virtual machine network configuration.
+
+vm_hostname: ubuntu16-baseline
+vm_domain: library.arizona.edu
+vm_fqdn: "{{ vm_hostname }}.{{ vm_domain }}"
+
+vm_net_name: ens160
+vm_net_type: static
+vm_net_ipaddr: 10.130.155.11
+vm_net_netmask: 255.255.255.0
+vm_net_network: 10.130.155.0
+vm_net_broadcast: 10.130.155.255
+vm_net_gateway: 10.130.155.1
+vm_net_mtu: 9000
+
+# Virtual machine ssh keys.
+
+vm_hostkey_dsa: "{{ vm_hostkey_dsa_v }}"
+vm_hostkey_dsa_public: |
+  ssh-dss AAAAB3NzaC1kc3MAAACBAJ7ihGYUenuDpyDFGlDp7ENhZ+BoSAJzoZNKXcM23HBTe5RMTapkzFN/4mFTWohw1WNa5f3Em9Z17I85XzRpaIzcCFP52Pk9TPnrHzYs6T2yg7DdDb6JBLmd0TXh9fqY+CxSDJQJ+ZBd9zZuNn3Z+mX1AW6Fcyur5ThHINEA+dLlAAAAFQDHK0TB98AvPzgJUV7F4KL3XCHR/wAAAIEAh3Koj+mUN8XuxOyxNK7he5As8O0wF1jv2KtEou8cgdcyD9+R7idEzbLhvALUT6jXRXwiZeGzvSNAEPWNX+oVP/IXyaBdvdpOvKcTCjes5gTYCN8VFcjtQuDoYC7TX1aUM0WYmhy6ZnsSmOofmgbA3eJF6tQExL1RI3f4uWV9iKAAAACAEvRSC1yaAru4AcMtbzk75yRH0cLnQTUGef9PrbXJKRowS0IcMtdRrce4Vp/dKgLsjqn0MBD4DWegm28UlvVlNLv86VFpJiK40Ok5xyOXU8wk6h7SwcPWxCN7OTKaTzQLLUBKLyiFRGtV2nU/h1ba9fNLkMfLI96NueXZuUtUfEo= root@ubuntu16-baseline
+vm_hostkey_ecdsa: "{{ vm_hostkey_ecdsa_v }}"
+vm_hostkey_ecdsa_public: |
+  ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFWj2KGqkzD+AnASAFfHqlm20+Wb7mSuJYAvtRKavezcSJTeXt4xpqlg4mwB9jGUh9fmSx3XvL0ukYOIfTaE6Ac= root@ubuntu16-baseline
+vm_hostkey_ed25519: "{{ vm_hostkey_ed25519_v }}"
+vm_hostkey_ed25519_public: |
+  ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO5GGe9sTipVztVL6aAW6LX6O0eM4CrjAvKq0yt5t1M9 root@ubuntu16-baseline
+vm_hostkey_rsa: "{{ vm_hostkey_rsa_v }}"
+vm_hostkey_rsa_public: |
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDG213CHjwMiTBKJTgRtlh4474BJspgM90sb8B08KYUrtRIIElBHGh62MtqOiU/mPmPvmPYsdqPazg9DUHpC2yHyOeQEGsE2N5pWNTVkzubXQVOV73qBfPFlgz4DbgbNCzOcKsz2a9nFkSzg/xilVZ3nHjAGUrD3sZdoZ7mlqsWqKhAi5GQd1p8atwj2Vvb6aYQJXLNhqTWUOrssuzP/+FvdfldXjxmqOomm7QDZ3IOEDN3WrZ1yRT0pkoVR3pQ198PLKcy01x1y9bKmlnlxDZUYH4hq+7t9QeYPF8wqn5OlzG0frXDorMUPkm9aLrRX1/hyXbCuP/mlqGq9sXtJ9zp root@ubuntu16-baseline

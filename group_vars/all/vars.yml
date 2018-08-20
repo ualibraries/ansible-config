@@ -8,3 +8,10 @@ vmware_vcenter_admin_username: administrator@vsphere.local
 vmware_vcenter_admin_password: "{{ vmware_vcenter_admin_password_v }}"
 vmware_vcenter_validate_certs: no
 
+# Splunk forwarder installation parameters.
+  
+splunkf_package_location: http://download.splunk.com/products/universalforwarder/releases/7.1.2/linux
+splunkf_package_rpm: splunkforwarder-7.1.2-a0c72a66db66-linux-2.6-x86_64.rpm
+splunkf_package_deb: splunkforwarder-7.1.2-a0c72a66db66-linux-2.6-amd64.deb
+splunkf_admin_username: admin
+splunkf_admin_password: "{{ splunkf_admin_password_v }}"
