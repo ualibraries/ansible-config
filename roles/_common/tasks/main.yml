@@ -4,3 +4,4 @@
 - import_tasks: standard-packages.yml
 - import_tasks: splunk-forwarder.yml
 - import_tasks: user-ssh-keys.yml
+- import_tasks: centos7-server-hardening.yml
