@@ -15,3 +15,90 @@ splunkf_package_rpm: splunkforwarder-7.1.2-a0c72a66db66-linux-2.6-x86_64.rpm
 splunkf_package_deb: splunkforwarder-7.1.2-a0c72a66db66-linux-2.6-amd64.deb
 splunkf_admin_username: admin
 splunkf_admin_password: "{{ splunkf_admin_password_v }}"
+
+# User SSH Keys parameters
+
+shell_users:
+  - username: enazar
+    use_sudo: yes
+    shell: "/bin/bash" 
+    user_state: present
+    public_key: "{{ public_key_enazar_vault }}"
+    key_state: present
+
+  - username: inolan
+    use_sudo: yes
+    shell: "/bin/bash"
+    user_state: present
+    public_key: "{{ public_key_inolan_vault }}"
+    key_state: present
+
+  - username: mgsimpson
+    use_sudo: yes
+    shell: "/bin/bash"
+    user_state: present
+    public_key: "{{ public_key_mgsimpson_vault }}"
+    key_state: present
+    
+  - username: rgrunloh
+    use_sudo: yes
+    shell: "/bin/bash"
+    user_state: present
+    public_key: "{{ public_key_rgrunloh_vault }}"
+    key_state: present
+
+  - username: glbrimhall
+    use_sudo: yes
+    shell: "/bin/bash"
+    user_state: present
+    public_key: "{{ public_key_glbrimhall_vault }}"
+    key_state: present
+
+  - username: mhagedon
+    use_sudo: yes
+    shell: "/bin/bash"
+    user_state: present
+    public_key: "{{ public_key_mhagedon_vault }}"
+    key_state: present
+
+  - username: richyu
+    use_sudo: yes
+    shell: "/bin/bash"
+    user_state: present
+    public_key: "{{ public_key_richyu_vault }}"
+    key_state: present
+
+  - username: raquel
+    use_sudo: yes
+    shell: "/bin/bash"
+    user_state: present
+    public_key: "{{ public_key_raquel_vault }}"
+    key_state: present
+
+  - username: cao89
+    use_sudo: yes
+    shell: "/bin/bash"
+    user_state: present
+    public_key: "{{ public_key_cao89_vault }}"
+    key_state: present    
+
+  - username: cg433n
+    use_sudo: yes
+    shell: "/bin/bash"
+    user_state: present
+    public_key: "{{ public_key_cg433n_vault }}"
+    key_state: present
+
+  - username: turmanj
+    use_sudo: yes
+    shell: "/bin/bash"
+    user_state: present
+    public_key: "{{ public_key_turmanj_vault }}"
+    key_state: present    
+
+  - username: ansible-admin
+    use_sudo: yes
+    shell: "/bin/bash"
+    user_state: present
+    public_key: "{{ public_key_ansibleadmin_vault }}"
+    key_state: present

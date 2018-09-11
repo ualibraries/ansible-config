@@ -1,0 +1,16 @@
+---
+# file: site_user_keys.yml
+
+#
+# Used to apply the "_common" role to our test ansible hosts.
+
+
+- name: Apply common configuration to baseline nodes
+  hosts: ansible-test-hosts 
+  remote_user: ansible-admin
+  become: yes
+  become_user: root
+  gather_facts: true
+  roles:
+    - _common
+
