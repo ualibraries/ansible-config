@@ -13,3 +13,10 @@
     state: latest
   when: update_kernel|bool == true
   notify: Restart Machine
+
+- name: Remove Packages
+  yum:
+    name: '{{ item }}'
+    state: absent
+  with_flattened:
+    - '{{remove_unwanted_packages}}'
