@@ -1,0 +1,15 @@
+---
+# This file hardens Centos 7 servers
+
+- name: Install All Non-Kernel Updates
+  yum: 
+    name: "*" 
+    exclude: kernel*
+    state: latest
+
+- name: Install Kernel Updates
+  yum: 
+    name: "kernel*" 
+    state: latest
+  when: updateKernel|bool == true
+  notify: Restart Machine
