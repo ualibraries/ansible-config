@@ -11,5 +11,5 @@
   yum: 
     name: "kernel*" 
     state: latest
-  when: updateKernel|bool == true
+  when: update_kernel|bool == true
   notify: Restart Machine

@@ -102,3 +102,8 @@ shell_users:
     user_state: present
     public_key: "{{ public_key_ansibleadmin_vault }}"
     key_state: present
+
+# Centos 7 Server Hardening variables
+
+# Whether the hosts should install kernel updates
+update_kernel: false
