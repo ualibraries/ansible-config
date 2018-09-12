@@ -104,10 +104,10 @@
 - name: Harden Mount /var/www
   mount:
     path: "/var/www"
-    src: ""
-    fstype: "none"
+    src: "/dev/mapper/centos-var_www"
+    fstype: "xfs"
     state: mounted
-    opts: "nodev,nosuid,noexec,bind"
+    opts: "nodev,nosuid,bind"
   notify: Restart Machine
 
 - name: Harden Mount /proc
