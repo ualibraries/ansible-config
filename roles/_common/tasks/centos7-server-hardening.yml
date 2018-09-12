@@ -32,7 +32,7 @@
 - name: Harden Mount /boot 
   mount:
     path: "/boot"
-    src: "/boot"
+    src: "none"
     fstype: "xfs"
     state: mounted
     opts: "rw, nodev, nosuid, noexec"
@@ -95,7 +95,7 @@
 - name: Harden Mount /dev/shm 
   mount:
     path: "/dev/shm"
-    src: "tmpfs"
+    src: "none"
     fstype: "tmpfs"
     state: mounted
     opts: "rw, nodev,nosuid,noexec"
@@ -113,7 +113,7 @@
 - name: Harden Mount /proc
   mount:
     path: "/proc"
-    src: "proc"
+    src: "none"
     fstype: "proc"
     state: mounted
     opts: "rw, hideip=2"
