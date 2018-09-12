@@ -20,3 +20,101 @@
     state: absent
   with_flattened:
     - '{{remove_unwanted_packages}}'
+
+- name: Harden Mount / 
+  mount:
+    path: "/"
+    src: "/dev/mapper/centos-root"
+    fstype: "xfs"
+    state: mounted
+  notify: Restart Machine
+
+- name: Harden Mount /boot 
+  mount:
+    path: "/boot"
+    src: "/boot"
+    fstype: "xfs"
+    state: mounted
+    opts: "rw, nodev, nosuid, noexec"
+  notify: Restart Machine
+
+- name: Harden Mount /home 
+  mount:
+    path: "/home"
+    src: "/dev/mapper/centos-home"
+    fstype: "xfs"
+    state: mounted
+    opts: "rw, nodev, nosuid"
+  notify: Restart Machine
+
+- name: Harden Mount /tmp 
+  mount:
+    path: "/tmp"
+    src: "/dev/mapper/centos-tmp"
+    fstype: "tmpfs"
+    state: mounted
+    opts: "rw, nodev, nosuid, noexec"
+  notify: Restart Machine
+
+- name: Harden Mount /var/tmp 
+  mount:
+    path: "/var/tmp"
+    src: "/dev/mapper/centos-var_tmp"
+    fstype: "none"
+    state: mounted
+    opts: "rw, nodev, nosuid, noexec, bind"
+  notify: Restart Machine
+
+- name: Harden Mount /var 
+  mount:
+    path: "/var"
+    src: "/dev/mapper/centos-var"
+    fstype: "xfs"
+    state: mounted
+    opts: "rw, nosuid,"
+  notify: Restart Machine
+
+- name: Harden Mount /var/log 
+  mount:
+    path: "/var/log"
+    src: "/dev/mapper/centos-var_log"
+    fstype: "xfs"
+    state: mounted
+    opts: "rw, nodev, nosuid, noexec"
+  notify: Restart Machine
+
+- name: Harden Mount /var/log/audit 
+  mount:
+    path: "/var/log/audit"
+    src: "/dev/mapper/centos-var_log_audit"
+    fstype: "xfs"
+    state: mounted
+    opts: "rw, nodev, nosuid, noexec"
+  notify: Restart Machine
+
+- name: Harden Mount /dev/shm 
+  mount:
+    path: "/dev/shm"
+    src: "tmpfs"
+    fstype: "tmpfs"
+    state: mounted
+    opts: "rw, nodev,nosuid,noexec"
+  notify: Restart Machine
+
+- name: Harden Mount /var/www
+  mount:
+    path: "/var/www"
+    src: ""
+    fstype: "none"
+    state: mounted
+    opts: "nodev,nosuid,noexec,bind"
+  notify: Restart Machine
+
+- name: Harden Mount /proc
+  mount:
+    path: "/proc"
+    src: "proc"
+    fstype: "proc"
+    state: mounted
+    opts: "rw, hideip=2"
+  notify: Restart Machine
