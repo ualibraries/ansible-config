@@ -1,7 +1,8 @@
 ---
+# file: roles/_common/tasks/centos7-server-hardening.yml
 # This file hardens Centos 7 servers
 
-# Upadates
+# Upadates and removing packages
 
 - name: Install All Non-Kernel Updates
   yum: 

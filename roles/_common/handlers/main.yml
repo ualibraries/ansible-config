@@ -30,3 +30,4 @@
 
 - name: set UMASK 027 /etc/init.d/functions
   command: sed -i -e 's/umask 022/umask 027/g' -e 's/umask 002/umask 027/g' /etc/init.d/functions
+  
