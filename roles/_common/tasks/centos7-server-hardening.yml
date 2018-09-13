@@ -1,6 +1,7 @@
 ---
 # This file hardens Centos 7 servers
 
+# UPDATES
 - name: Install All Non-Kernel Updates
   yum: 
     name: "*" 
@@ -21,6 +22,7 @@
   with_flattened:
     - '{{remove_unwanted_packages}}'
 
+# HARDEN MOUNTS
 - name: Harden Mount / 
   mount:
     path: "/"
@@ -118,3 +120,9 @@
     state: mounted
     opts: "rw, hideip=2"
   notify: Restart Machine
+  
+- name: Restrict Dynamic Mounting and Unmounting Filesystems
+  template:
+    src: etc_modprobe.d_hardening.conf
+    dest: /etc/modprobe.d/hardening.conf
+    
