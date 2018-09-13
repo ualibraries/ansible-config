@@ -151,8 +151,7 @@
   notify:
     - set UMASK 027 /etc/init.d/functions
 
-- name: Disable Core Dumps
-  lineinfile:
-    path: /etc/security/limits.conf
-    insertafter: EOF
-    state: present
+- name: Disable Core Dumps and Set Security Limits to Prevent DoS
+  template:
+    src: etc_security_limits.conf
+    dest: /etc/security/limits.conf
