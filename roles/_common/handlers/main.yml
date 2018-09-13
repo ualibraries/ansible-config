@@ -15,3 +15,6 @@
 
 - name: restart splunk forwarder
   command: /opt/splunkforwarder/bin/splunk restart
+
+- name: load sysctl settings
+  command: sysctp -p

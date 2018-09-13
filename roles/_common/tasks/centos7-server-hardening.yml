@@ -132,4 +132,5 @@
   template:
     src: etc_sysctl.conf
     dest: /etc/sysctl.conf
-    
+  notify:
+    - load sysctl settings
