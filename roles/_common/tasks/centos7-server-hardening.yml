@@ -1,7 +1,8 @@
 ---
 # This file hardens Centos 7 servers
 
-# UPDATES
+# Upadates
+
 - name: Install All Non-Kernel Updates
   yum: 
     name: "*" 
@@ -22,8 +23,9 @@
   with_flattened:
     - '{{remove_unwanted_packages}}'
 
-# HARDEN MOUNTS
-- name: Harden Mount / 
+# System Settings – File Permissions and Masks
+
+- name: Restrict Partition Mount Options / 
   mount:
     path: "/"
     src: "/dev/mapper/centos-root"
@@ -31,7 +33,7 @@
     state: mounted
   notify: Restart Machine
 
-- name: Harden Mount /boot 
+- name: Restrict Partition Mount Options /boot 
   mount:
     path: "/boot"
     src: "none"
@@ -40,7 +42,7 @@
     opts: "rw, nodev, nosuid, noexec"
   notify: Restart Machine
 
-- name: Harden Mount /home 
+- name: Restrict Partition Mount Options /home 
   mount:
     path: "/home"
     src: "/dev/mapper/centos-home"
@@ -49,7 +51,7 @@
     opts: "rw, nodev, nosuid"
   notify: Restart Machine
 
-- name: Harden Mount /tmp 
+- name: Restrict Partition Mount Options /tmp 
   mount:
     path: "/tmp"
     src: "/dev/mapper/centos-tmp"
@@ -58,7 +60,7 @@
     opts: "rw, nodev, nosuid, noexec"
   notify: Restart Machine
 
-- name: Harden Mount /var/tmp 
+- name: Restrict Partition Mount Options /var/tmp 
   mount:
     path: "/var/tmp"
     src: "/dev/mapper/centos-var_tmp"
@@ -67,7 +69,7 @@
     opts: "rw, nodev, nosuid, noexec, bind"
   notify: Restart Machine
 
-- name: Harden Mount /var 
+- name: Restrict Partition Mount Options /var 
   mount:
     path: "/var"
     src: "/dev/mapper/centos-var"
@@ -76,7 +78,7 @@
     opts: "rw, nosuid,"
   notify: Restart Machine
 
-- name: Harden Mount /var/log 
+- name: Restrict Partition Mount Options /var/log 
   mount:
     path: "/var/log"
     src: "/dev/mapper/centos-var_log"
@@ -85,7 +87,7 @@
     opts: "rw, nodev, nosuid, noexec"
   notify: Restart Machine
 
-- name: Harden Mount /var/log/audit 
+- name: Restrict Partition Mount Options /var/log/audit 
   mount:
     path: "/var/log/audit"
     src: "/dev/mapper/centos-var_log_audit"
@@ -94,7 +96,7 @@
     opts: "rw, nodev, nosuid, noexec"
   notify: Restart Machine
 
-- name: Harden Mount /dev/shm 
+- name: Restrict Partition Mount Options /dev/shm 
   mount:
     path: "/dev/shm"
     src: "none"
@@ -103,7 +105,7 @@
     opts: "rw, nodev,nosuid,noexec"
   notify: Restart Machine
 
-- name: Harden Mount /var/www
+- name: Restrict Partition Mount Options /var/www
   mount:
     path: "/var/www"
     src: "/dev/mapper/centos-var_www"
@@ -112,7 +114,7 @@
     opts: "nodev,nosuid,bind"
   notify: Restart Machine
 
-- name: Harden Mount /proc
+- name: Restrict Partition Mount Options /proc
   mount:
     path: "/proc"
     src: "none"
@@ -121,8 +123,13 @@
     opts: "rw, hideip=2"
   notify: Restart Machine
   
-- name: Restrict Dynamic Mounting and Unmounting Filesystems
+- name: Restrict Dynamic Mounting and Unmounting of Filesystems
   template:
     src: etc_modprobe.d_hardening.conf
     dest: /etc/modprobe.d/hardening.conf
+    
+- name: Restrict Programs from Dangerous Execution Patterns
+  template:
+    src: etc_sysctl.conf
+    dest: /etc/sysctl.conf
     
