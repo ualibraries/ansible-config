@@ -1,6 +1,7 @@
 ---
 # file: roles/_common/handlers/main.yml
 
+# splunk
 - name: accept splunk license
   command: /opt/splunkforwarder/bin/splunk start --accept-license --no-prompt
 
@@ -16,6 +17,7 @@
 - name: restart splunk forwarder
   command: /opt/splunkforwarder/bin/splunk restart
 
+# centos7 server hardening
 - name: load sysctl settings
   command: sysctp -p
 
@@ -30,4 +32,3 @@
 
 - name: set UMASK 027 /etc/init.d/functions
   command: sed -i -e 's/umask 022/umask 027/g' -e 's/umask 002/umask 027/g' /etc/init.d/functions
-  
