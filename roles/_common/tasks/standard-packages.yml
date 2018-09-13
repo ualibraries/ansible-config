@@ -23,6 +23,7 @@
     state: present
   vars:
     packages:
+    - vim
     - emacs
     - nfs-common
     - open-vm-tools
