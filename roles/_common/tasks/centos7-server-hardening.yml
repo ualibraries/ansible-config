@@ -134,3 +134,25 @@
     dest: /etc/sysctl.conf
   notify:
     - load sysctl settings
+
+- name: set UMASK 027 /etc/bashrc
+  notify:
+    - set UMASK 027 /etc/bashrc
+
+- name: set UMASK 027 /etc/csh.cshrc
+  notify:
+    - set UMASK 027 /etc/csh.cshrc
+
+- name: set UMASK 027 /etc/profile
+  notify:
+    - set UMASK 027 /etc/profile
+
+- name: set UMASK 027 /etc/init.d/functions
+  notify:
+    - set UMASK 027 /etc/init.d/functions
+
+- name: Disable Core Dumps
+  lineinfile:
+    path: /etc/security/limits.conf
+    insertafter: EOF
+    state: present
