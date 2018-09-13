@@ -136,7 +136,7 @@
   notify:
     - load sysctl settings
 
-- name: set UMASK 027
+- name: set UMASK
   notify:
     - set UMASK 027 /etc/bashrc
     - set UMASK 027 /etc/csh.cshrc
