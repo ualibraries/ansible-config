@@ -24,7 +24,7 @@
   with_flattened:
     - '{{remove_unwanted_packages}}'
 
-# System Settings – File Permissions and Masks
+# File Permissions and Masks
 
 - name: Restrict Partition Mount Options / 
   mount:
@@ -136,14 +136,21 @@
   notify:
     - load sysctl settings
 
-- name: set UMASK
-  notify:
-    - set UMASK 027 /etc/bashrc
-    - set UMASK 027 /etc/csh.cshrc
-    - set UMASK 027 /etc/profile
-    - set UMASK 027 /etc/init.d/functions
+- name: set UMASK 027 /etc/bashrc
+  command: sed -i -e 's/umask 022/umask 027/g' -e 's/umask 002/umask 027/g' /etc/bashrc
+
+- name: set UMASK 027 /etc/csh.cshrc
+  command: sed -i -e 's/umask 022/umask 027/g' -e 's/umask 002/umask 027/g' /etc/csh.cshrc
+
+- name: set UMASK 027 /etc/profile
+  command: sed -i -e 's/umask 022/umask 027/g' -e 's/umask 002/umask 027/g' /etc/profile
+
+- name: set UMASK 027 /etc/init.d/functions
+  command: sed -i -e 's/umask 022/umask 027/g' -e 's/umask 002/umask 027/g' /etc/init.d/functions
 
 - name: Disable Core Dumps and Set Security Limits to Prevent DoS
   template:
     src: etc_security_limits.conf
     dest: /etc/security/limits.conf
+
+# Firewall and Network Configuration

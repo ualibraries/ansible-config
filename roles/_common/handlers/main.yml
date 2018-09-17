@@ -20,15 +20,3 @@
 # centos7 server hardening
 - name: load sysctl settings
   command: sysctp -p
-
-- name: set UMASK 027 /etc/bashrc
-  command: sed -i -e 's/umask 022/umask 027/g' -e 's/umask 002/umask 027/g' /etc/bashrc
-
-- name: set UMASK 027 /etc/csh.cshrc
-  command: sed -i -e 's/umask 022/umask 027/g' -e 's/umask 002/umask 027/g' /etc/csh.cshrc
-
-- name: set UMASK 027 /etc/profile
-  command: sed -i -e 's/umask 022/umask 027/g' -e 's/umask 002/umask 027/g' /etc/profile
-
-- name: set UMASK 027 /etc/init.d/functions
-  command: sed -i -e 's/umask 022/umask 027/g' -e 's/umask 002/umask 027/g' /etc/init.d/functions
