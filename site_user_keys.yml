@@ -7,7 +7,7 @@
 
 - name: Apply common configuration to baseline nodes
   hosts: ansible-test-hosts 
-  remote_user: ansible-admin
+  remote_user: inolan
   become: yes
   become_user: root
   gather_facts: true

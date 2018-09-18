@@ -37,10 +37,10 @@
 - name: Restrict Partition Mount Options /boot 
   mount:
     path: "/boot"
-    src: "none"
+    src: "/dev/mapper/centos-boot"
     fstype: "xfs"
     state: mounted
-    opts: "rw, nodev, nosuid, noexec"
+    opts: "rw,nodev,nosuid,noexec"
   notify: Restart Machine
 
 - name: Restrict Partition Mount Options /home 
@@ -49,7 +49,7 @@
     src: "/dev/mapper/centos-home"
     fstype: "xfs"
     state: mounted
-    opts: "rw, nodev, nosuid"
+    opts: "rw,nodev,nosuid"
   notify: Restart Machine
 
 - name: Restrict Partition Mount Options /tmp 
@@ -58,16 +58,16 @@
     src: "/dev/mapper/centos-tmp"
     fstype: "tmpfs"
     state: mounted
-    opts: "rw, nodev, nosuid, noexec"
+    opts: "rw,nodev,nosuid,noexec"
   notify: Restart Machine
 
 - name: Restrict Partition Mount Options /var/tmp 
   mount:
     path: "/var/tmp"
     src: "/dev/mapper/centos-var_tmp"
-    fstype: "none"
+    fstype: "tmpfs"
     state: mounted
-    opts: "rw, nodev, nosuid, noexec, bind"
+    opts: "rw,nodev,nosuid,noexec,bind"
   notify: Restart Machine
 
 - name: Restrict Partition Mount Options /var 
@@ -76,7 +76,7 @@
     src: "/dev/mapper/centos-var"
     fstype: "xfs"
     state: mounted
-    opts: "rw, nosuid,"
+    opts: "rw,nosuid,"
   notify: Restart Machine
 
 - name: Restrict Partition Mount Options /var/log 
@@ -85,7 +85,7 @@
     src: "/dev/mapper/centos-var_log"
     fstype: "xfs"
     state: mounted
-    opts: "rw, nodev, nosuid, noexec"
+    opts: "rw,nodev,nosuid,noexec"
   notify: Restart Machine
 
 - name: Restrict Partition Mount Options /var/log/audit 
@@ -94,7 +94,7 @@
     src: "/dev/mapper/centos-var_log_audit"
     fstype: "xfs"
     state: mounted
-    opts: "rw, nodev, nosuid, noexec"
+    opts: "rw,nodev,nosuid,noexec"
   notify: Restart Machine
 
 - name: Restrict Partition Mount Options /dev/shm 
@@ -103,25 +103,25 @@
     src: "none"
     fstype: "tmpfs"
     state: mounted
-    opts: "rw, nodev,nosuid,noexec"
+    opts: "rw,nodev,nosuid,noexec"
   notify: Restart Machine
 
-- name: Restrict Partition Mount Options /var/www
-  mount:
-    path: "/var/www"
-    src: "/dev/mapper/centos-var_www"
-    fstype: "xfs"
-    state: mounted
-    opts: "nodev,nosuid,bind"
-  notify: Restart Machine
+#- name: Restrict Partition Mount Options /var/www
+#  mount:
+#    path: "/var/www"
+#    src: "/dev/mapper/centos-var_www"
+#    fstype: "xfs"
+#    state: mounted
+#    opts: "nodev,nosuid,bind"
+#  notify: Restart Machine
 
 - name: Restrict Partition Mount Options /proc
   mount:
     path: "/proc"
-    src: "none"
+    src: "/dev/mapper/centos-proc"
     fstype: "proc"
     state: mounted
-    opts: "rw, hideip=2"
+    opts: "rw,hideip=2"
   notify: Restart Machine
   
 - name: Restrict Dynamic Mounting and Unmounting of Filesystems
