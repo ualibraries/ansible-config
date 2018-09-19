@@ -18,8 +18,8 @@
   command: /opt/splunkforwarder/bin/splunk restart
 
 # centos7 server hardening
+- name: load sysctl settings
+  command: sysctl -p
+
 - name: Restart Machine
   command: shutdown -r now
-  
-- name: load sysctl settings
-  command: sysctp -p

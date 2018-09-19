@@ -115,26 +115,26 @@
 #    opts: "nodev,nosuid,bind"
 #  notify: Restart Machine
 
-- name: Restrict Partition Mount Options /proc
-  mount:
-    path: "/proc"
-    src: "/dev/mapper/centos-proc"
-    fstype: "proc"
-    state: mounted
-    opts: "rw,hideip=2"
-  notify: Restart Machine
+#- name: Restrict Partition Mount Options /proc
+#  mount:
+#    path: "/proc"
+#    src: "/dev/mapper/centos-proc"
+#    fstype: "proc"
+#    state: mounted
+#    opts: "rw,hideip=2"
+#  notify: Restart Machine
   
 - name: Restrict Dynamic Mounting and Unmounting of Filesystems
   template:
     src: etc_modprobe.d_hardening.conf
     dest: /etc/modprobe.d/hardening.conf
     
-- name: Restrict Programs from Dangerous Execution Patterns
-  template:
-    src: etc_sysctl.conf
-    dest: /etc/sysctl.conf
-  notify:
-    - load sysctl settings
+#- name: Restrict Programs from Dangerous Execution Patterns
+#  template:
+#    src: etc_sysctl.conf
+#    dest: /etc/sysctl.conf
+#  notify:
+#    - load sysctl settings
 
 - name: set UMASK 027 /etc/bashrc
   command: sed -i -e 's/umask 022/umask 027/g' -e 's/umask 002/umask 027/g' /etc/bashrc
