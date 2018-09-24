@@ -3,23 +3,23 @@
 
 - name: Create Open Arizona administrative group.
   group:
-    name: "{{ group_openaz_name }}"
-    gid: "{{ group_openaz_gid }}"
+    name: "{{ openaz_group_name }}"
+    gid: "{{ openaz_group_gid }}"
     state: present
 
 - name: Create Open Arizona administrative user.
   user:
-    name: "{{ user_openaz_name }}"
-    uid: "{{ user_openaz_uid }}"
-    comment: "{{ user_openaz_comment }}"
-    shell: "{{ user_openaz_shell }}"
-    home: "{{ user_openaz_home }}"
-    group: "{{ user_openaz_group }}"
+    name: "{{ openaz_user_name }}"
+    uid: "{{ openaz_user_uid }}"
+    comment: "{{ openaz_user_comment }}"
+    shell: "{{ openaz_user_shell }}"
+    home: "{{ openaz_user_home }}"
+    group: "{{ openaz_user_group }}"
     state: present
 
 - name: Create Open Arizona user ssh directory.
   file:
-    path: "{{ user_openaz_home }}/.ssh"
+    path: "{{ openaz_user_home }}/.ssh"
     state: directory
     mode: 0755
 
@@ -29,15 +29,15 @@
     dest: "{{ item.dest }}"
     mode: "{{ item.mode }}"
   loop:
-    - { content: "{{ user_openaz_key_rsa }}", dest: "{{ user_openaz_home }}/.ssh/id_rsa", mode: "0400" }
-    - { content: "{{ user_openaz_key_rsa_public }}", dest: "{{ user_openaz_home }}/.ssh/id_rsa.pub", mode: "0444" }
+    - { content: "{{ openaz_user_key_rsa }}", dest: "{{ openaz_user_home }}/.ssh/id_rsa", mode: "0400" }
+    - { content: "{{ openaz_user_key_rsa_public }}", dest: "{{ openaz_user_home }}/.ssh/id_rsa.pub", mode: "0444" }
 
 - name: Mount Manifold NAS shares.
   mount:
     src: "{{ item.src }}"
     path: "{{ item.path }}"
     fstype: nfs
-    opts: nfsvers=3,proto=tcp,intr,hard,noatime,nodiratime,timeo=100,retrans=2,acdirmin=120,acdirmax=240
+    opts: "{{ qnas_nfs_opts }}"
     state: mounted
   loop:
     - { src: "qnas1.library.arizona.edu:/{{vm_hostname}}-manifold-var", path: "/var/opt/manifold" }
@@ -55,3 +55,10 @@
   notify:
     - reconfigure manifold
     - add manifold admin
+
+- meta: flush_handlers
+
+- name: Start Manifold services.
+  systemd:
+    name: manifold-runsvdir.service
+    state: started

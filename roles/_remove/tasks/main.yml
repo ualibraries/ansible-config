@@ -1,15 +1,6 @@
 ---
 # file: roles/_remove/tasks/main.yml
 
-#- name: Issue shutdown command to service node.
-#  command: "/sbin/shutdown -h now"
-#  async: 0
-#  poll: 0
-#  ignore_errors: true
-#  
-#- name: Wait for shutdown.
-#  local_action: wait_for host={{ ansible_ssh_host }} port=22 state=stopped
-
 - name: Shutdown service node.
   delegate_to: localhost
   become: no

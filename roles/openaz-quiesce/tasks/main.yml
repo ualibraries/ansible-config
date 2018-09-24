@@ -2,17 +2,16 @@
 # file: roles/openaz-quiesce/tasks/main.yml
 
 - name: Stop Manifold services.
-  command: "/usr/local/bin/manifold-ctl stop"
-
-- name: Stop annoyingly persistent Runit logging services.
-  shell: "/opt/manifold/embedded/bin/sv stop /opt/manifold/sv/*/log"
+  systemd:
+    name: manifold-runsvdir.service
+    state: stopped
 
 - name: Unmount Manifold NAS shares.
   mount:
     src: "{{ item.src }}"
     path: "{{ item.path }}"
     fstype: nfs
-    opts: nfsvers=3,proto=tcp,intr,hard,noatime,nodiratime,timeo=100,retrans=2,acdirmin=120,acdirmax=240
+    opts: "{{ qnas_nfs_opts }}"
     state: unmounted
   loop:
     - { src: "qnas1.library.arizona.edu:/{{vm_hostname}}-manifold-var", path: "/var/opt/manifold" }

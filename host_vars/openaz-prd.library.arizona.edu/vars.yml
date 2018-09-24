@@ -5,10 +5,8 @@
 
 environment_name: Production
 environment_tag: prd
-
-manifold_package_location: https://storage.googleapis.com/manifold-dist/debian
-manifold_package_version: manifold_1.0.1-1_amd64.deb
-manifold_external_url: http://openaz-prd.library.arizona.edu
+environment_baseline: ubuntu16-baseline-1
+environment_url: http://open.uapress.arizona.edu/
 
 # Virtual machine network configuration.
 
@@ -27,6 +25,9 @@ vm_net_mtu: 9000
 
 # Virtual machine ssh keys.
 
+vm_hostkey_dsa: "{{ vm_hostkey_dsa_v }}"
+vm_hostkey_dsa_public: |
+  ssh-dss AAAAB3NzaC1kc3MAAACBAIS6Dx+kM1LlG7TzEc7oLuBY768KpzAXXBa+SIUtbVq8ERxreIziWVil/hIfJ0a8SmhhXx1qdMhuFvVmTbgySzNipaeNSVjn28ZjunwbVVW//cyiWlPWDKqeQ/tlOG48mwIkVbmISecCguafVo1ovLj09daGtvLcrcghTobV4iNLAAAAFQCpCfkii8/Z/ZB2ld166kz75iAZuQAAAIBy6nFATPSD1LM/aOwvYCaj1D2eFbO3zjwbwAGF0akMzNdMx3VPEIqPPonr1B23Tjj9XZEvg+GZ+oG1eyUcJL6VDY3xNdRFd/oe2b52Fl0+KCV5W2uWufiRprv9GezW7ZrFJOjJ8dZVLeLjP0WbiUXPOjYx2Rf4EEj5IJOXg30ukAAAAIA+5brNJOo16eFDYLXniIbWerIT4c91HNkb9XgUXo1tH8efLXulSZl5MSVKhq//55w6NaiBNeX5U4NR6XIMyf4rzmdaJkNPISMWTXarqltKJoM5ZWHsZMl70waH+Rdc7H5vSTOpwmQfPgsRJsEygdlGSrkd1fGHE/Hz/SH4YzO6CA==
 vm_hostkey_ecdsa: "{{ vm_hostkey_ecdsa_v }}"
 vm_hostkey_ecdsa_public: |
   ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFzXclGpq8u7/CBGu7KMAnG4tUwieFbJTzJv+HJf884mPkS23OiM0BmpuerI0tOdE+3Yi7lpTTTrvzpR+kATU70=

@@ -8,6 +8,14 @@ vmware_vcenter_admin_username: administrator@vsphere.local
 vmware_vcenter_admin_password: "{{ vmware_vcenter_admin_password_v }}"
 vmware_vcenter_validate_certs: no
 
+vmware_guest_datacenter: LCU
+vmware_guest_cluster: SMPLV-C1
+vmware_guest_folder: "/LCU/vm/Service VMs"
+vmware_guest_template: "{{ environment_baseline }}"
+vmware_guest_name: "{{ vm_hostname }}"
+vmware_guest_network_name: "Public Network (199)"
+vmware_guest_device_type: vmxnet3
+
 # Splunk forwarder installation parameters.
   
 splunkf_package_location: http://download.splunk.com/products/universalforwarder/releases/7.1.2/linux
@@ -16,89 +24,98 @@ splunkf_package_deb: splunkforwarder-7.1.2-a0c72a66db66-linux-2.6-amd64.deb
 splunkf_admin_username: admin
 splunkf_admin_password: "{{ splunkf_admin_password_v }}"
 
-# User SSH Keys parameters
+# Qumulo NFS mount options.
 
-shell_users:
-  - username: enazar
-    use_sudo: yes
-    shell: "/bin/bash" 
-    user_state: present
-    public_key: "{{ public_key_enazar_vault }}"
-    key_state: present
+qnas_nfs_opts: "nfsvers=3,proto=tcp,intr,hard,noatime,nodiratime,timeo=100,retrans=2,acdirmin=120,acdirmax=240"
 
-  - username: inolan
-    use_sudo: yes
-    shell: "/bin/bash"
-    user_state: present
-    public_key: "{{ public_key_inolan_vault }}"
-    key_state: present
+# User account parameters.
 
-  - username: mgsimpson
-    use_sudo: yes
+user_accounts:
+  -
+    name: enazar
+    uid: 1001
+    comment: Elia Nazarenko
     shell: "/bin/bash"
-    user_state: present
-    public_key: "{{ public_key_mgsimpson_vault }}"
-    key_state: present
-    
-  - username: rgrunloh
+    public_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbjtsyDnoAVx3uUhboBjHqVN47Qlp08WBwkwk0I6Q8coPy7A8nnIK5dbtUeYKq3QFAiU6CpotPMAD1inYoHUBINsVGpbQ1zo7SYCu9s0tlT/VuZgRU4g1CxBEHS7IXOr5Yay9nS7upE4gZkd8sfLcm4oyudWyhP5gLMIq8bExdWzQLrwqT4LPZyCNMONcn2aCAiopQRrx2YCC9WbQ9NwJYtaNcRQNqsei99gvfoshcTPXeCAPem7YXcXPu+MQgUH1s7ZIP44zGvKy39LqE+EHeM0YGQIqPNU4dZ1VgwACeuU7vmGHX8XFBQ9LM1ofqpwU9M4jPS7GvvPdowGG5zA+j enazar@email.arizona.edu
     use_sudo: yes
+  -
+    name: glbrimhall
+    uid: 1002
+    comment: Geoff Brimhall
     shell: "/bin/bash"
-    user_state: present
-    public_key: "{{ public_key_rgrunloh_vault }}"
-    key_state: present
-
-  - username: glbrimhall
+    public_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCl16bDt6t+qNG6OWnHdaVpefxGSoy2Md3+vp69033Wi/2y2yWcWrV4Kjmypyyaksl9+a2RlmN3RKOswhYDAawR4jRbjIupkW81AwTcC+ogFaPf9JUiLZeOQAo34kgpUG7al+ifiBUX9NKBg5au6JOXsqz94A0KUNfbMKFNR7MqyTd4V0tKbqI3lj8JOjJt35ymL+podYEZqIivvvZ0DwldpPVWxbUINxVmfH7ioTdTHY+sC9DWZRxYi48sV9mxmY1WK/NkNtZTaoPDJqqg/oR8NSbCmSquCHY7INSWNkCVWBYL7oPl/4tRDLP9A1TfbrINn4+MRWeLvg4w8QtcxcMd glbrimhall@email.arizona.edu
     use_sudo: yes
+  -
+    name: isaiahnolan
+    uid: 1003
+    comment: Isaiah Nolan
     shell: "/bin/bash"
-    user_state: present
-    public_key: "{{ public_key_glbrimhall_vault }}"
-    key_state: present
-
-  - username: mhagedon
+    public_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDqm47NOEOrbo951yxWuH7QKgBGStQDU8GGOn3xONqCMB8I2K21dNmeLE+Qe4jRM8tP5zVUjwSFs48cwG/IumubWFXQOW19l6Dgn1yA08+7Q3VPVnjaP3gNQ1NuqcwFBGQoU0EP955VHCBJvDN5Xa2OD9z9N87fbm3Bgj0lG1mddqQk4C9pc7KqM3H6dJrD5/98HQ4bn/5OD1cv0EQ0EpnZnXKdjERwPh7tLHTLzjgjXM4f7F1sZiN+oQYWFF/R7pXhj0srkA9KlkrTScYKgd31VrrpwTrzOf6uoyiJWdkXg0LNA2Xcsm8EOyWBOrzft+J4xjpP/2ngFCqWKDTy4FFD inolan@email.arizona.edu
     use_sudo: yes
-    shell: "/bin/bash"
-    user_state: present
-    public_key: "{{ public_key_mhagedon_vault }}"
-    key_state: present
-
-  - username: richyu
+  -
+    name: mgsimpson
+    uid: 1004
+    comment: Mike Simpson
+    shell: "/bin/zsh"
+    public_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/KrMKxPNbl3b6tTfakoadUJJcqHxefDPsOHf9t/bZbXk4hT3cgCL1DRqRzKNJG7tMxorXg/HxJw3bC2Sz6JbuS3plQyKQy7ex5xw3vTweUfAJwKLzAS/UhaqmM3F5NRVBUzRuZ1I/KH8CNQL2WXPA/vNA6kK46kYGmvFkv9DRGAZvGdjFVdo13vtX7IU4ew5r+nXbPG1+ixke3uEBcwYUKuCAM8nqQ+KdvPjwwyLxCOPlBhrdvgQ1vlLgtlyxW2byrmZeDqdqaSwPJ598sGs/6bcTgK0HY5MpkgpkGfoxq5J2QWgRb62PnD9SxC9fHsTqZ93VlEiKUYN+eYHA7oir mgsimpson@email.arizona.edu
     use_sudo: yes
+  -
+    name: rgrunloh
+    uid: 1005
+    comment: Bob Grunloh
     shell: "/bin/bash"
-    user_state: present
-    public_key: "{{ public_key_richyu_vault }}"
-    key_state: present
-
-  - username: raquel
+    public_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCexC70L/TMzqX/VuTk/04xiRbANicSmVduFsEE2os7G3qw3ZOUxJd+DNd5Zm4R3TxABLMORV5o9srz0uIvo5kuxLBRI9kpxdTzOr1EzGq/k2tiwohJPD0U0lNeaqqu1/7nKKO+ARjXugU1Y+4r8DLlcRizYuPW4qjwVsyTbRV/pgFXetOlqCjI29e6SHn4RVx5mX6V7Z+fJhuzFqj47UJ0Oig5dEUjQbejLFm6DbEcBldJB5Yaf5Nxx4y4Gw0DGBUCZuv1LFHuh6p0WdftamcmGi6qIkogjCEBvXLGGRlgacW7vkWFXzuk6XX3jIycbc+IiVWTS0/2j1WMIz57ODKl rgrunloh@email.arizona.edu
     use_sudo: yes
+  -
+    name: mhagedon
+    uid: 1006
+    comment: Mike Hagedon
     shell: "/bin/bash"
-    user_state: present
-    public_key: "{{ public_key_raquel_vault }}"
-    key_state: present
-
-  - username: cao89
+    public_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDP08smB3vn/bvdr5PtJuigi+ARhAnXDE1EMfPUdRl6OUEqO6/36PUvwmMUBXUCOZC0NnD9gIECp1ufAJRC9c13gsb5zubgJfsZ91hGzQo4ie63/QsyHOhHP2YAPZ2pZLYv6b1ng+w1W5In6lRIWQQWruglctEhvaKH14QpovE2ZKSId1weUqOVuGeYa9fKgoZJHIf5m5eEnFJfly3n49oq0mx+2Y2CuV6DJ9nVjUwgs+UwkxIfCur83VBKENTymoUfQKd+MGRPf9wtZz7eFZa4zoL2RwtkRboGx0oyr60RPUM/f07+fy7+cgcWn7VM4h0wO4rs5anfnqX9VybSizi+KI8yb/4mGo6ubQArDylXKOMP5IODp3UeQqfAkEgNj+beeXHg43PeIi2G+iYSC4doDpnth9ei6bL1PJUEl16ZHk4Y1yPAGWW+7QVuDa+eC8duXASsWoBW+skg8FLX/E8BbE9OgT/+1TzI2YbnlzbKNqqXzTgyFzJ46lkPaLgBz3Gy2O1sFLO5YYH3fjINBEku0S+A7fWG3vKq874eRHmCET7Lrt4l9i+qRaPnmUJG+WWk2UT2ZByxx+Qh883Pg0kpuVYh6uRmj4KCznvgt0B1YHyYYB5+ibV4ZdG9B9g0uzgYsVN+N7PLFXBSRDCaDGnPM38OOCgyhZ7j+gfo7hY5HQ== mhagedon@email.arizona.edu
     use_sudo: yes
+  -
+    name: richyu
+    uid: 1007
+    comment: Rich Yu
     shell: "/bin/bash"
-    user_state: present
-    public_key: "{{ public_key_cao89_vault }}"
-    key_state: present    
-
-  - username: cg433n
+    public_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCjqB0NzXHcGFvRJnEoic5oww4PwwX4AVAOoaVKuky1FK8KEOKQOGzormfIANcqoD4YRQKPCVx8Yl+yMNjqTyAPYMhdcT3mZlAMmJ9/IIZYB1TeTiErz7Bz977Nw/Lt7qal5TRvPeaGvFUNEYCgF8xLbET4DAwcgPUDGyV9GjSLBzDufxHzj4HVKa6aHn4pcXXwYxGq5SfyUdn/iunqzQd9w+kTRJVhLA+Y53cXUD/Cy9v6EVm3rWU4XRx/2uG47eQRaTfdeAGC1tRgQUHCog8Jesu3eO/C0Q1UVo4hqawx/CRpQfzH0MdXznpp40mCohpyIClgN8o7InCVnMy4v9EqdFVoJabHYa2x/eqmwMvtYw7TboFd7yqobiR4JqLm7KBGv6emSt0TubczpT0UFW30rs+r9ozQ5+AV79j64vATuRMynfH6ecsikRkeqmZcOUJ/HionUDh6CL+ooULV3SL1a3dHjHEgCuWPLOeVUHRVahlcoj+9pzjrPRJEWaKH4agJfXS4hee7FSfeh4htIAtv2Iyl7LGaptciF5XTnxoZPKvUwNzjNokuy/Y6FMefQWgY7rLruM9XCklbw5EPFhIsTF6/bqrzlWoJji3kmKWv/Mh69GE/MV6DkZv5j8IO/6S5Zcs060RFsNaVegbWFTs2PUFNFkUTST1caCuvQoxp8Q== richyu@email.arizona.edu
     use_sudo: yes
+  -
+    name: raquelzevallos
+    uid: 1008
+    comment: Raquel Zevallos
     shell: "/bin/bash"
-    user_state: present
-    public_key: "{{ public_key_cg433n_vault }}"
-    key_state: present
-
-  - username: turmanj
+    public_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzG8nCrnZ07pHdegQGZ5UAYfS3FMeSxxL3iuU8rzPn6JhPQXA7Az/O4BXLn56acezfuLXzpltj8Gj/eacy1k1AD+6toyO9hmgZqh7TOaSWTQamnoHqeKRKSSJjCfJJy6z9P2xVkucIfFPjWauIVO9st9Zci1RAErHWw8NyI/40rf8TG+emqqamAsBgmDxzf0wBgApOZPvAQixui9Pb5wNb06CuyFQSglsZ52itj2ORe9bF5zt9XGX7uxC68EjcUMcSc2pJw/mArUODI/O70STyMCXTkswbK2UanAsUCzZus0W84BCeUrwnaeS4TXlZWW4aR2Os5UzX53rp45h/wNzF raquelzevallos@email.arizona.edu
     use_sudo: yes
+  -
+    name: cao89
+    uid: 1009
+    comment: Andy Osborne
     shell: "/bin/bash"
-    user_state: present
-    public_key: "{{ public_key_turmanj_vault }}"
-    key_state: present    
-
-  - username: ansible-admin
+    public_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKVvHyjA3p6/fhToYlwPdu6jBLYWKkgpSLl21JcpOCSIfpcW0UQ7BQ2WrS8pYOZTDztqRLjDt2tbtli95626mSDmfhVWceSAYlzOFlp882uUIOTjCq5qVwEpkIVvQKfthahgrvCgf6v2gd8K23p2kG3IelRRhAA/e/8Wn4GvpcLtAcIQ00Fi5XyFPtpkmf77fjjXFkyJ+aPyMDP8NXkKnlv24fb3C/e8VFlSxqQHpcI8veZW8YAIrncEvC92ZC3xlMyVlxksZEC8bDEY93jvpEn1Ul1Hy4EF9LAnQTn4uFSLkq3IHWTdkTkbn+DO2LzxWzCiIFx4McSHxTXvU/YiDn cao89@email.araizona.edu
     use_sudo: yes
+  -
+    name: cg433n
+    uid: 1010
+    comment: Christopher Green
     shell: "/bin/bash"
-    user_state: present
-    public_key: "{{ public_key_ansibleadmin_vault }}"
-    key_state: present
+    public_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCiO+g/pOHODy8S76K+UIA2so92Ee6gxcL4ITLLqHd7UIvx2+TFj1J7lcYsiwDkpjzgbwTBu5OipYdkO2WKQtUrOlbXdLRNKj5TR7dXKCou3dYEDmcHmsyFB/4+x0mV8l2dW7mWhFWvhoTC1OHiFAquGto3kPO+uwNeR10eGDvyIDr0pvLqNY4Q/WXVuuzQy4Duf96Zql5beZ638dVUMmFx90zzHjhaJgn2fejKLjVQZzgAqpfBioAEfRV0v9EcTfW+wo9w58pux5YOktuM5R6J4707A0VC4OPS4KEbVYsBO5l/cqNeDLYUzk2fhxtjP+CuR+WE0rmAJutzIB65IsDp cg433n@email.arizona.edu
+    use_sudo: yes
+  -
+    name: turmanator
+    uid: 1011
+    comment: Jeff Turman
+    shell: "/bin/bash"
+    public_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDJhB7F55mtVFmT1NLxnyWLF9t0jX6U7eQRC6djG05GzOiziD/P9lNylgrRVWDYWQ5pkjErZisYLqPHHAzJlN2NwmZ8JX5Ol2wkD8jzOBIEmNw8p/38cGk+Mrc29LFJsqwnAlrAHbbAjWzDGK4PthRjtJhYV8jIJt+SNcY3gCxe5KJOoeP4YX32uF1PHRFfcLg4oEfqgpUitDDodN8BPbkMNYucY7XLtCBJIehapJSrCwenmDH3OzBja0AjEZjCb1Xy3yoClc27RGE6a09HdxcCKiIyy/b1yDwP8fATosCgFrOr1aHjjH095etkxhTNnIcW73uk5f26OhJZ+bHgxQFZSh3VRcAtHH2R6/mdcxJbGbmrRyM/SPB1YjuQg7V6c2azJzKo88/lKZ+zwcFo6G3UB9z11pFz0m+zDZX5coLlxfSDnWaDN7s28nh9pXVLXycdrhGDFG999jd/136sNdhUMfAUSClojL0sCN5gAJvK3c2QGtnSqi3LtCdXV94dLl8Z7yOcBlCBxhzG2Oqqkaru5kJjuk31mjktPabjDUBiBXYvn8SsyatAzE3NQK5oSqVWKo0QUeXc1xWvBrngJfjvYxYa0B2lzWlDMlOou5CEK901uiWhOeojF4JVZKEeavTVWMSCtdmppQfcXPofuA7osbg6ipHJnXNfTccot3yM9w== turmanator@email.arizona.edu
+    use_sudo: yes

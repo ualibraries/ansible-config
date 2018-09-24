@@ -2,5 +2,5 @@
 # file: roles/_common/tasks/main.yml
 
 - import_tasks: standard-packages.yml
+- import_tasks: user-accounts.yml
 - import_tasks: splunk-forwarder.yml
-- import_tasks: user-ssh-keys.yml
