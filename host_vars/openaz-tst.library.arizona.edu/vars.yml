@@ -5,10 +5,8 @@
 
 environment_name: Testing
 environment_tag: tst
-
-manifold_package_location: https://storage.googleapis.com/manifold-dist/debian
-manifold_package_version: manifold_1.0.1-1_amd64.deb
-manifold_external_url: http://openaz-tst.library.arizona.edu
+environment_baseline: ubuntu16-baseline-1
+environment_url: http://openaz-tst.library.arizona.edu/
 
 # Virtual machine network configuration.
 
@@ -27,6 +25,9 @@ vm_net_mtu: 9000
 
 # Virtual machine ssh keys.
 
+vm_hostkey_dsa: "{{ vm_hostkey_dsa_v }}"
+vm_hostkey_dsa_public: |
+  ssh-dss AAAAB3NzaC1kc3MAAACBAKCZMOm3iASZWZnCYQ8RtRO8EZpNuIRBf6MsNsrr7HnjfqQpB3ZPjvCaayfZSU4+IPNXuMmyZxLCsGW52v0J0Ucz5w5/Mn2yZ/Bdyevsfc1ocsRSJqSqp8FmAdyzdMOeM6pDXekUMMG+N7I8GbqwIHnUUU8Mwo6Yjm6A9ahuq2n5AAAAFQC+Frh84mTmhH3rYDNNBTboFyGwFQAAAIA1S5RL2Qk9ok3Y13QcB2sRXI7rDYdf2cDsLNuLTCA00dhWSKhCaafYd21JeYCwcHkxpbJkEZI3vwnOvVEsPXjygwlcq0AvhQXfeJ7AB54m4xw5dgrt5n5LP2c4Fu1RVGsqoSimEliIowCqLIVct+B1z0zolRkGZfy2YZ0FczgrhgAAAIEAmY4GefFxWPj7fRhrJdPDZx233Up4IVXapv1iz1hsCTuwxLMsny2xrpNx/3Idjyh8z1MpPhPgrjcTD1jEsyTNX1zawIv30YGEB7WfmumDrbZvLiGZwtwTmkztU6uQU0Gae58JqjPi5IZXcfrzBvFoGiwFZCeGZuFkDlujGB8vOrU=
 vm_hostkey_ecdsa: "{{ vm_hostkey_ecdsa_v }}"
 vm_hostkey_ecdsa_public: |
   ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKrt4gNb3Yq/SL2yfrAKz7CcahyGMYUdBj3erZnxO9R6LeL44i/fcjSU3rcbnR9/KaBUI1P9S50VvlqrzHuVAz4=

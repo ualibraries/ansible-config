@@ -5,10 +5,8 @@
 
 environment_name: Staging
 environment_tag: stg
-
-manifold_package_location: https://storage.googleapis.com/manifold-dist/debian
-manifold_package_version: manifold_1.0.1-1_amd64.deb
-manifold_external_url: http://openaz-stg.library.arizona.edu
+environment_baseline: ubuntu16-baseline-1
+environment_url: http://openaz-stg.library.arizona.edu/
 
 # Virtual machine network configuration.
 
@@ -27,6 +25,9 @@ vm_net_mtu: 9000
 
 # Virtual machine ssh keys.
 
+vm_hostkey_dsa: "{{ vm_hostkey_dsa_v }}"
+vm_hostkey_dsa_public: |
+  ssh-dss AAAAB3NzaC1kc3MAAACBAI9F5cKU1G87Gn55ZnlcnBqj+E8znH8azo3OOmWxfz23E4BtqpFxxywLFhVMf2k2mN8LryKLr92MwM9vwubWNVbIwYdwBMbRjbA/44jBqiA3pIHfEX4Ev9zUy80yInPqANltejRwXoHtS+bC4sTYRqJeifzACApyXzRUkA3S23LlAAAAFQCJXCnchNjev3WaKqGhHonsiQKt+wAAAIBg7DswNktrEZINyzCEzghEprFRIcAWCiMlZ5or/ygE6sR7y0bfObU2UcUFiNaPUPTYg/wmlZ/+jMqWywDO6y8qdfJCkkrln/g0nqPJz91lzehXo0qQzEoWoGJ8V87iJamTP39g/pxS9w0oSK5+P80OWKIUDnlzGdaw2iJ+cPAEVQAAAIB581ZphTu6aL0pxgrC7tiiMaj3kVVUXO7jxt9yYpo+ImEDbozZaSO+96v7CduU3m/BBDIOPjndDoob+2IUD8Ge1Sp2Zygf7IwPXJLlSu1VTTb8ENY6Cyg4oD8VZ6vmBYFAYWaHM2PRIDA1aLwer9crv/f/XkShuD4bGJRy12JQ5Q==
 vm_hostkey_ecdsa: "{{ vm_hostkey_ecdsa_v }}"
 vm_hostkey_ecdsa_public: |
   ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEV/x4yee6rhq+TxFvrkKOI1e+sAx4Pv/Ud2pxYNIfC80+cT/wUn4xxLesnY/rjz8TIoioZ6bx3vfaaFVEOsWO8=

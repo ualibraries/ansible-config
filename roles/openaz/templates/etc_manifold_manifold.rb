@@ -1,15 +1,12 @@
-##
-## Generate from template file by Ansible.
-##
-
 ## Manifold configuration settings
 ##! This file is generated during initial installation and **is not** modified
 ##! during upgrades.
 
+
 ## Manifold URL
 ##! URL on which Manifold will be reachable.
 ##! For more details on configuring external_url see:
-external_url '{{ manifold_external_url }}'
+external_url '{{ environment_url }}'
 
 ## Legend
 ##! The following notations at the beginning of each line may be used to
@@ -227,7 +224,6 @@ external_url '{{ manifold_external_url }}'
 # nginx['enable'] = true
 # nginx['client_max_body_size'] = '250m'
 # nginx['redirect_http_to_https'] = false
-# nginx['redirect_http_to_https_port'] = 80
 
 ##! Most root CA's are included by default
 # nginx['ssl_client_certificate'] = "/etc/manifold/ssl/ca.crt"
@@ -259,22 +255,14 @@ external_url '{{ manifold_external_url }}'
 ##! **Override only if you use a reverse proxy**
 # nginx['listen_port'] = nil
 
-##! **Override only if your reverse proxy internally communicates over HTTP**
-# nginx['listen_https'] = nil
+##! **Only enable if you've also setup SSL certificate and key**
+# nginx['listen_https'] = false
 
 # nginx['custom_manifold_server_config'] = "location ^~ /foo-namespace/bar-project/raw/ {\n deny all;\n}\n"
 # nginx['custom_nginx_config'] = "include /etc/nginx/conf.d/example.conf;"
 # nginx['proxy_read_timeout'] = 3600
 # nginx['proxy_connect_timeout'] = 300
-# nginx['proxy_set_headers'] = {
-#  "Host" => "$http_host",
-#  "X-Real-IP" => "$remote_addr",
-#  "X-Forwarded-For" => "$proxy_add_x_forwarded_for",
-#  "X-Forwarded-Proto" => "https",
-#  "X-Forwarded-Ssl" => "on",
-#  "Upgrade" => "$http_upgrade",
-#  "Connection" => "$connection_upgrade"
-# }
+
 # nginx['proxy_cache_path'] = 'proxy_cache keys_zone=manifold:10m max_size=1g levels=1:2'
 # nginx['proxy_cache'] = 'manifold'
 # nginx['http2_enabled'] = true
