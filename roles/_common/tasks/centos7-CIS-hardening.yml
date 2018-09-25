@@ -135,3 +135,37 @@
     fstype: "tmpfs"
     state: mounted
     opts: "rw,nodev,nosuid,noexec"
+
+- name: "Ensure separate partition exists for /var/log | 1.1.11"
+  shell: mount | grep "on /var/log "
+  register: var_log_mounted
+  changed_when: no
+  failed_when: no
+
+- name: "Ensure separate partition exists for /var/log/audit | 1.1.12"
+  shell: mount | grep "on /var/log/audit "
+  register: var_log_audit_mounted
+  changed_when: no
+  failed_when: no
+
+- name: "Ensure separate partition exists for /home | 1.1.13"
+  shell: mount | grep "on /home"
+  register: home_mounted
+  changed_when: no
+  failed_when: no
+
+- name: "Ensure nodev option set on /home partition | 1.1.14"
+  mount:
+    path: "/home"
+    src: "/dev/mapper/centos-home"
+    fstype: "xfs"
+    state: mounted
+    opts: "nosuid"
+
+- name: "Ensure nodev, nosuid, noexec option set on /dev/shm partition | 1.1.15 | 1.1.16 | 1.1.17"
+  mount:
+      name: /dev/shm
+      src: tmpfs
+      state: mounted
+      fstype: tmpfs
+      opts: "defaults,nodev,nosuid,noexec"
