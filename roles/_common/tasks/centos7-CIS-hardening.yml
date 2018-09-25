@@ -169,3 +169,28 @@
       state: mounted
       fstype: tmpfs
       opts: "defaults,nodev,nosuid,noexec"
+
+# 3.6 Firewall Configuration
+
+- name: "Ensure firewalld is installed and started 3.6"
+  yum:
+      name: firewalld
+      state: present
+
+- name: "Ensure firewalld is started 3.6"
+  service:
+      name: firewalld
+      state: started
+      enabled: yes
+
+- name: "Ensure iptables is installed | 3.6.1"
+  yum:
+      name: iptables
+      state: present
+
+- name: "Ensure iptables is started | 3.6.1"
+  service:
+      name: iptables
+      state: started
+      enabled: yes
+
