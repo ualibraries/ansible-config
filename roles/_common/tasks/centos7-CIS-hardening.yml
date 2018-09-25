@@ -1,0 +1,100 @@
+---
+# file: roles/_common/tasks/centos7-server-hardening.yml
+# This file hardens Centos 7 servers
+
+#
+- name: "Ensure mounting of cramfs filesystems is disabled | 1.1.1.1"
+  lineinfile:
+      dest: /etc/modprobe.d/CIS.conf
+      regexp: "^(#)?install cramfs(\\s|$)"
+      line: "install cramfs /bin/true"
+      create: yes
+
+- name: "Remove cramfs module | 1.1.1.1"
+  modprobe:
+    name: cramfs
+    state: absent
+
+- name: "Ensure mounting of freevxfs filesystems is disabled | 1.1.1.2"
+  lineinfile:
+      dest: /etc/modprobe.d/CIS.conf
+      regexp: "^(#)?install freevxfs(\\s|$)"
+      line: "install freevxfs /bin/true"
+      create: yes
+
+- name: "Remove freevxfs module | 1.1.1.2"
+  modprobe:
+    name: freevxfs
+    state: absent
+
+- name: "Ensure mounting of jffs2 filesystems is disabled | 1.1.1.3"
+  lineinfile:
+      dest: /etc/modprobe.d/CIS.conf
+      regexp: "^(#)?install jffs2(\\s|$)"
+      line: "install jffs2 /bin/true"
+      create: yes
+
+- name: "Remove jffs2 module | 1.1.1.3"
+  modprobe:
+    name: jffs2
+    state: absent
+
+- name: "Ensure mounting of hfs filesystems is disabled | 1.1.1.4"
+  lineinfile:
+      dest: /etc/modprobe.d/CIS.conf
+      regexp: "^(#)?install hfs(\\s|$)"
+      line: "install hfs /bin/true"
+      create: yes
+
+- name: "Remove hfs module | 1.1.1.4"
+  modprobe:
+    name: hfs
+    state: absent
+
+- name: "Ensure mounting of hfsplus filesystems is disabled | 1.1.1.5"
+  lineinfile:
+      dest: /etc/modprobe.d/CIS.conf
+      regexp: "^(#)?install hfsplus(\\s|$)"
+      line: "install hfsplus /bin/true"
+      create: yes
+
+- name: "Remove hfsplus module | 1.1.1.5"
+  modprobe:
+    name: hfsplus
+    state: absent
+
+- name: "Ensure mounting of squashfs filesystems is disabled | 1.1.1.6"
+  lineinfile:
+      dest: /etc/modprobe.d/CIS.conf
+      regexp: "^(#)?install squashfs(\\s|$)"
+      line: "install squashfs /bin/true"
+      create: yes
+
+- name: "Remove squashfs module | 1.1.1.6"
+  modprobe:
+    name: squashfs
+    state: absent
+
+- name: "Ensure mounting of udf filesystems is disabled | 1.1.1.7"
+  lineinfile:
+      dest: /etc/modprobe.d/CIS.conf
+      regexp: "^(#)?install udf(\\s|$)"
+      line: "install udf /bin/true"
+      create: yes
+
+- name: "Remove udf module | 1.1.1.7"
+  modprobe:
+    name: udf
+    state: absent
+
+- name: "Ensure mounting of FAT filesystems is disabled | 1.1.1.8"
+  lineinfile:
+      dest: /etc/modprobe.d/CIS.conf
+      regexp: "^(#)?install vfat(\\s|$)"
+      line: "install vfat /bin/true"
+      create: yes
+
+- name: "Remove FAT module | 1.1.1.8"
+  modprobe:
+    name: vfat
+    state: absent
