@@ -17,13 +17,7 @@
 - name: restart splunk forwarder
   command: /opt/splunkforwarder/bin/splunk restart
 
-# centos7 server hardening
-- name: load sysctl settings
-  command: sysctl -p
-
-- name: Restart Machine
-  command: shutdown -r now
-
+# centos7 CIS hardening
 - name: systemd restart var-tmp.mount
   become: yes
   systemd:
