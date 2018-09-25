@@ -1,7 +1,7 @@
 ---
 # file: roles/_common/tasks/centos7-server-hardening.yml
 
-# 1.1.1 Disable unused filesystems
+# 1.1.1.1 - 1.1.1.8 Disable unused filesystems
 - name: "Ensure mounting of cramfs filesystems is disabled | 1.1.1.1"
   lineinfile:
       dest: /etc/modprobe.d/CIS.conf
@@ -98,7 +98,7 @@
     name: vfat
     state: absent
 
-# Ensure separate partitions
+# 1.1.2 - 1.1.17 Ensure separate partitions and set permissions
 - name: "Ensure separate partition exists for /tmp | enable and start/restart tmp.mount | 1.1.2"
   systemd:
       name: tmp.mount
