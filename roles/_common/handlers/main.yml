@@ -23,3 +23,12 @@
 
 - name: Restart Machine
   command: shutdown -r now
+
+- name: systemd restart var-tmp.mount
+  become: yes
+  systemd:
+      name: var-tmp.mount
+      daemon_reload: yes
+      enabled: yes
+      masked: no
+      state: reloaded
