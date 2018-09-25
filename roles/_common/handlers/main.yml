@@ -18,10 +18,9 @@
   command: /opt/splunkforwarder/bin/splunk restart
 
 # centos7 CIS hardening
-- name: systemd restart var-tmp.mount
-  become: yes
+- name: systemd restart tmp.mount
   systemd:
-      name: var-tmp.mount
+      name: tmp.mount
       daemon_reload: yes
       enabled: yes
       masked: no
