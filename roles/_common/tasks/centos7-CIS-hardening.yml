@@ -172,26 +172,24 @@
 
 # 3.6 Firewall Configuration
 
-- name: "Ensure firewalld is installed and started 3.6"
-  yum:
-    name: firewalld
-    state: present
 
-- name: "Ensure firewalld is started 3.6"
+- name: "Unistall firewalld"
+  yum:
+      name: firewalld
+      state: absent
+
+- name: "Ensure iptables is installed | 3.6.1"
+  yum:
+      name: iptables-services
+      state: present
+
+- name: "Ensure iptables is started | 3.6.1"
   service:
-    name: firewalld
-    state: started
-    enabled: yes
+      name: iptables
+      state: started
+      enabled: yes
 
 - name: "Ensure default deny firewall policy | 3.6.2"
-  firewalld:
-    state: enabled
-    zone: drop
-    permanent: true
-
-- name: "Ensure loopback traffic is configured | 3.6.3"
-  firewalld:
-    source: 127.0.0.0/8
-    state: enabled
-    zone: drop
-    permanent: true
+  iptables:
+    chain: INPUT
+    policy: DROP
