@@ -197,12 +197,12 @@
 
 - name: Apply common iptables4 rules
   template:
-    src: iptables4_config
+    src: etc_sysconfig_iptables
     dest: /etc/sysconfig/iptables
   notify: restart iptables
 
 - name: Apply common iptables6 rules
   template:
-    src: iptables6_config
+    src: etc_sysconfig_ip6tables
     dest: /etc/sysconfig/ip6tables
   notify: restart iptables6
