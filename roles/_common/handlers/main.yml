@@ -25,3 +25,14 @@
       enabled: yes
       masked: no
       state: reloaded
+
+- name: restart iptables
+  systemd:
+    name: iptables
+    state: restarted
+    
+- name: restart iptables6
+  systemd:
+    name: ip6tables
+    state: restarted
+    

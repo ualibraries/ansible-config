@@ -1,0 +1,80 @@
+*filter
+
+# base policy
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+
+# allow internal traffic on loopback device
+-A INPUT -i lo -j ACCEPT
+
+# continue established connections
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+# drop non-conforming packets
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+
+# drop remote packets claiming to be on loopback device
+-A INPUT -s ::1/128 ! -i lo -j DROP
+
+# create chain for preventing ssh brute force attacks
+-N SSHBRUTE
+-A SSHBRUTE -m recent --name SSH --set
+-A SSHBRUTE -m recent --name SSH --update --seconds 300 --hitcount 10 -m limit --limit 1/second --limit-burst 100 -j LOG --log-prefix "ip6tables[SSH-brute]: "
+-A SSHBRUTE -m recent --name SSH --update --seconds 300 --hitcount 10 -j DROP
+-A SSHBRUTE -j ACCEPT
+
+# create chain for preventing ping flooding
+-N ICMPFLOOD
+-A ICMPFLOOD -m recent --set --name ICMP --rsource
+-A ICMPFLOOD -m recent --update --seconds 1 --hitcount 6 --name ICMP --rsource --rttl -m limit --limit 1/sec --limit-burst 1 -j LOG --log-prefix "ip6tables[ICMP-flood]: "
+-A ICMPFLOOD -m recent --update --seconds 1 --hitcount 6 --name ICMP --rsource --rttl -j DROP
+-A ICMPFLOOD -j ACCEPT
+
+# allow ssh connections filtered through ssh brute force protection
+-A INPUT -p tcp --dport 22 --syn -m conntrack --ctstate NEW -j SSHBRUTE
+
+# allow required icmp packets per rfc-4890
+-A INPUT              -p ipv6-icmp --icmpv6-type 1   -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 2   -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 3   -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 4   -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 133 -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 134 -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 135 -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 136 -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 137 -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 141 -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 142 -j ACCEPT
+-A INPUT -s fe80::/10 -p ipv6-icmp --icmpv6-type 130 -j ACCEPT
+-A INPUT -s fe80::/10 -p ipv6-icmp --icmpv6-type 131 -j ACCEPT
+-A INPUT -s fe80::/10 -p ipv6-icmp --icmpv6-type 132 -j ACCEPT
+-A INPUT -s fe80::/10 -p ipv6-icmp --icmpv6-type 143 -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 148 -j ACCEPT
+-A INPUT              -p ipv6-icmp --icmpv6-type 149 -j ACCEPT
+-A INPUT -s fe80::/10 -p ipv6-icmp --icmpv6-type 151 -j ACCEPT
+-A INPUT -s fe80::/10 -p ipv6-icmp --icmpv6-type 152 -j ACCEPT
+-A INPUT -s fe80::/10 -p ipv6-icmp --icmpv6-type 153 -j ACCEPT
+
+# allow ping packets filtered through ping flood protection
+-A INPUT -p ipv6-icmp --icmpv6-type 128 -j ICMPFLOOD
+
+# drop smb packets
+-A INPUT -p udp -m multiport --dports 135,445 -j DROP
+-A INPUT -p udp --dport 137:139 -j DROP
+-A INPUT -p udp --sport 137 --dport 1024:65535 -j DROP
+-A INPUT -p tcp -m multiport --dports 135,139,445 -j DROP
+
+# drop upnp packets
+-A INPUT -p udp --dport 1900 -j DROP
+
+# drop late dns replies
+-A INPUT -p udp --sport 53 -j DROP
+
+# reject auth traffic
+-A INPUT -p tcp --dport 113 --syn -m conntrack --ctstate NEW -j REJECT --reject-with tcp-reset
+
+# prevent log-filling dos attacks
+-A INPUT -m limit --limit 1/second --limit-burst 100 -j LOG --log-prefix "ip6tables[DOS]: "
+
+COMMIT

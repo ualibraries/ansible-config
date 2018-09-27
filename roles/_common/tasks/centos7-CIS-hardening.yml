@@ -173,23 +173,36 @@
 # 3.6 Firewall Configuration
 
 
-- name: "Unistall firewalld"
+- name: Install iptables services
   yum:
-      name: firewalld
-      state: absent
+    name: iptables-services
+    state: present
 
-- name: "Ensure iptables is installed | 3.6.1"
-  yum:
-      name: iptables-services
-      state: present
+- name: Disable and mask firewalld service
+  systemd:
+    name: firewalld
+    enabled: no
+    masked: yes
+    state: stopped
 
-- name: "Ensure iptables is started | 3.6.1"
-  service:
-      name: iptables
-      state: started
-      enabled: yes
+- name: Enable and start iptables services
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    masked: no
+    state: started
+  with_items:
+    - iptables
+    - ip6tables
 
-- name: "Ensure default deny firewall policy | 3.6.2"
-  iptables:
-    chain: INPUT
-    policy: DROP
+- name: Apply common iptables4 rules
+  template:
+    src: iptables4_config
+    dest: /etc/sysconfig/iptables
+  notify: restart iptables
+
+- name: Apply common iptables6 rules
+  template:
+    src: iptables6_config
+    dest: /etc/sysconfig/ip6tables
+  notify: restart iptables6

@@ -1,0 +1,67 @@
+*filter
+
+# base policy
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+
+# allow internal traffic on loopback device
+-A INPUT -i lo -j ACCEPT
+
+# continue established connections
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+# drop non-conforming packets
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+
+# drop remote packets claiming to be on loopback device
+-A INPUT -s 127.0.0.0/8 ! -i lo -j DROP
+
+# drop all broadcast, multicast, and anycast packets
+-A INPUT -m addrtype --dst-type BROADCAST -j DROP
+-A INPUT -m addrtype --dst-type MULTICAST -j DROP
+-A INPUT -m addrtype --dst-type ANYCAST -j DROP
+-A INPUT -d 224.0.0.0/4 -j DROP
+
+# create chain for preventing ssh brute force attacks
+-N SSHBRUTE
+-A SSHBRUTE -m recent --name SSH --set
+-A SSHBRUTE -m recent --name SSH --update --seconds 300 --hitcount 10 -m limit --limit 1/second --limit-burst 100 -j LOG --log-prefix "iptables[ssh-brute]: "
+-A SSHBRUTE -m recent --name SSH --update --seconds 300 --hitcount 10 -j DROP
+-A SSHBRUTE -j ACCEPT
+
+# create chain for preventing ping flooding
+-N ICMPFLOOD
+-A ICMPFLOOD -m recent --name ICMP --set --rsource
+-A ICMPFLOOD -m recent --name ICMP --update --seconds 1 --hitcount 6 --rsource --rttl -m limit --limit 1/sec --limit-burst 1 -j LOG --log-prefix "iptables[icmp-flood]: "
+-A ICMPFLOOD -m recent --name ICMP --update --seconds 1 --hitcount 6 --rsource --rttl -j DROP
+-A ICMPFLOOD -j ACCEPT
+
+# allow ssh connections filtered through ssh brute force protection
+-A INPUT -p tcp -m conntrack --dport 22 --syn --ctstate NEW -j SSHBRUTE
+
+# permit useful icmp packets
+-A INPUT -p icmp --icmp-type 0  -m conntrack --ctstate NEW -j ACCEPT
+-A INPUT -p icmp --icmp-type 3  -m conntrack --ctstate NEW -j ACCEPT
+-A INPUT -p icmp --icmp-type 8  -m conntrack --ctstate NEW -j ICMPFLOOD
+-A INPUT -p icmp --icmp-type 11 -m conntrack --ctstate NEW -j ACCEPT
+
+# drop smb packets
+-A INPUT -p udp -m multiport --dports 135,445 -j DROP
+-A INPUT -p udp --dport 137:139 -j DROP
+-A INPUT -p udp --sport 137 --dport 1024:65535 -j DROP
+-A INPUT -p tcp -m multiport --dports 135,139,445 -j DROP
+
+# drop upnp packets
+-A INPUT -p udp --dport 1900 -j DROP
+
+# drop late dns replies
+-A INPUT -p udp --sport 53 -j DROP
+
+# reject auth traffic
+-A INPUT -p tcp --dport 113 -m conntrack --syn --ctstate NEW -j REJECT --reject-with tcp-reset
+
+# prevent log-filling dos attacks
+-A INPUT -m limit --limit 1/second --limit-burst 100 -j LOG --log-prefix "iptables[dos]: "
+
+COMMIT
