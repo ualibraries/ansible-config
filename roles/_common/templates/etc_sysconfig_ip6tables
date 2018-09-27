@@ -5,8 +5,9 @@
 :FORWARD DROP [0:0]
 :OUTPUT ACCEPT [0:0]
 
-# allow internal traffic on loopback device
+# allow internal traffic on loopback device | 3.6.4
 -A INPUT -i lo -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
 
 # continue established connections
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
@@ -14,8 +15,8 @@
 # drop non-conforming packets
 -A INPUT -m conntrack --ctstate INVALID -j DROP
 
-# drop remote packets claiming to be on loopback device
--A INPUT -s ::1/128 ! -i lo -j DROP
+# drop remote packets claiming to be on loopback device | 3.6.4
+-A INPUT -s ::1/128 lo -j DROP
 
 # create chain for preventing ssh brute force attacks
 -N SSHBRUTE
