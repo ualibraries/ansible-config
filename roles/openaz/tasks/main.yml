@@ -40,6 +40,7 @@
     opts: "{{ qnas_nfs_opts }}"
     state: mounted
   loop:
+    - { src: "qnas1.library.arizona.edu:/{{vm_hostname}}-manifold-opt", path: "/opt/manifold" }
     - { src: "qnas1.library.arizona.edu:/{{vm_hostname}}-manifold-var", path: "/var/opt/manifold" }
     - { src: "qnas1.library.arizona.edu:/{{vm_hostname}}-manifold-logs", path: "/var/log/manifold" }
     
