@@ -25,7 +25,7 @@ openaz_user_key_rsa_public: |
 # Manifold installation and configuration parameters.
 
 manifold_package_location: https://storage.googleapis.com/manifold-dist/ubuntu16
-manifold_package_version: manifold_2.0.2-1_amd64.deb
+manifold_package_version: manifold_2.0.4-1_amd64.deb
 
 manifold_admin_email: LBRY-OPS-LCU@email.arizona.edu
 manifold_admin_password: "{{ manifold_admin_password_v }}"
