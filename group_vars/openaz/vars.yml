@@ -31,3 +31,8 @@ manifold_admin_email: LBRY-OPS-LCU@email.arizona.edu
 manifold_admin_password: "{{ manifold_admin_password_v }}"
 manifold_admin_fname: Manifold
 manifold_admin_lname: Superuser
+
+manifold_email_smtp_server: smtpgate.email.arizona.edu
+manifold_email_smtp_port: 25
+manifold_email_from_address: "no-reply@{{ vm_fqdn }}"
+manifold_email_from_name: UA Press

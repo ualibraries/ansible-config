@@ -42,6 +42,22 @@ external_url '{{ environment_url }}'
 # manifold_api['manifold_email_reply_to'] = 'noreply@example.com'
 # manifold_api['manifold_email_subject_suffix'] = ''
 
+### UA email settings per https://redmine.library.arizona.edu/issues/10827.
+### Note that using the "Email Settings" commented out above doesn't seem to
+### work as of v2.0.4, so we're using the environment-settings configuration
+### style instead.
+manifold_api['env'] = {
+  'MANAGE_SETTINGS_FROM_ENV' => 1,
+  'MANIFOLD_SETTING_EMAIL_DELIVERY_METHOD' => 'smtp',
+  'MANIFOLD_SETTING_EMAIL_SMTP_SETTINGS_ADDRESS' => '{{ manifold_email_smtp_server }}',
+  'MANIFOLD_SETTING_EMAIL_SMTP_SETTINGS_PORT' => '{{ manifold_email_smtp_port }}',
+  'MANIFOLD_SETTING_EMAIL_FROM_ADDRESS' => '{{ manifold_email_from_address }}',
+  'MANIFOLD_SETTING_EMAIL_FROM_NAME' => '{{ manifold_email_from_name }}',
+  'MANIFOLD_SETTING_EMAIL_REPLY_TO_ADDRESS' => '{{ manifold_email_from_address }}',
+  'MANIFOLD_SETTING_EMAIL_REPLY_TO_NAME' => '{{ manifold_email_from_name }}',
+  'MANIFOLD_SETTING_EMAIL_CLOSING' => '- {{ manifold_email_from_name }}',
+}
+
 ### Trusted proxies
 ###! Customize if you have Manifold behind a reverse proxy which is running on a
 ###! different machine.
