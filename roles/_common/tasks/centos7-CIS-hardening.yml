@@ -206,3 +206,31 @@
     src: etc_sysconfig_ip6tables
     dest: /etc/sysconfig/ip6tables
   notify: restart iptables6
+
+
+# 2.2.1.2 Ensure ntp is configured
+- name: Set timezone
+  file:
+    src: "/usr/share/zoneinfo/America/Phoenix"
+    dest: "/etc/localtime"
+    owner: root
+    group: root
+    state: link
+
+- name: Install ntp services
+  yum:
+    name: ntp
+    state: present
+
+- name: Enable and start ntpd service
+  systemd:
+    name: ntpd
+    enabled: yes
+    masked: no
+    state: started
+
+- name: Apply common ntp configuration
+  template:
+    src: etc_ntp.conf
+    dest: /etc/ntp.conf
+  notify: restart ntpd

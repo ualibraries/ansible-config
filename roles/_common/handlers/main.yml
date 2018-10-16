@@ -35,4 +35,8 @@
   systemd:
     name: ip6tables
     state: restarted
-    
+
+- name: restart ntpd
+  systemd:
+    name: ntpd
+    state: restarted
