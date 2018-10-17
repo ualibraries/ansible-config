@@ -113,7 +113,7 @@
     dest: /etc/systemd/system/tmp.mount
     owner: root
     group: root
-    mode: 0644
+    mode: 1777
   notify: systemd restart tmp.mount
 
 - name: "Ensure separate partition exists for /var | 1.1.6"
