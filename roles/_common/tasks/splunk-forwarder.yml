@@ -33,3 +33,11 @@
     dest: /opt/splunkforwarder/etc/system/local/user-seed.conf
   notify:
     - restart splunk forwarder
+
+- name: Change Splunk Permissions
+  file: 
+    path: /opt/splunkforwarder
+    state: directory
+    recurse: yes
+    owner: splunk
+    group: splunk
