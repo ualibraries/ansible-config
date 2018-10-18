@@ -1,16 +1,12 @@
 ---
 # file: site_user_keys.yml
 
-#
-# Used to apply the "_common" role to our test ansible hosts.
-
-
-- name: Apply common configuration to baseline nodes
-  hosts: ansible-test-hosts 
+- name: disableTHT
+  hosts: splunk 
   remote_user: inolan
   become: yes
   become_user: root
   gather_facts: true
   roles:
-    - _common
+    - disableTHT
 
