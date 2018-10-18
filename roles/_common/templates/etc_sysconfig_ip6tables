@@ -16,7 +16,7 @@
 -A INPUT -m conntrack --ctstate INVALID -j DROP
 
 # drop remote packets claiming to be on loopback device | 3.6.4
--A INPUT -s ::1/128 lo -j DROP
+-A INPUT -s ::1/128 ! -i lo -j DROP
 
 # create chain for preventing ssh brute force attacks
 -N SSHBRUTE
