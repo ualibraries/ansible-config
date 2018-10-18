@@ -4,3 +4,6 @@ openaz-tst.library.arizona.edu
 [ansible-test-hosts]
 ansible-test-host
 ansible-test-host2
+
+[archive-test-host]
+deploy-cent7.library.arizona.edu
