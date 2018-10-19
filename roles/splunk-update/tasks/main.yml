@@ -1,0 +1,36 @@
+---
+- name: check splunk status and store stdout to the value in register
+  command: "/opt/splunkforwarder/bin/splunk status"
+  register: command_output
+  ignore_errors: true
+
+- name: create usable variable 
+  set_fact:
+    status: "{{ command_output.stdout }}"
+
+- name: print usable variable
+  debug:
+    msg: "{{ status }}"
+
+- name: stop splunk
+  command: /opt/splunkforwarder/bin/splunk stop
+  when:
+    - status != "splunkd is not running."
+
+- name: (CentOS) Upgrade Splunk Forwarder.
+  yum:
+    name: "{{ splunkf_package_location }}/{{ splunkf_package_rpm }}"
+    state: present
+  when:
+    - ansible_distribution == "CentOS"
+    - status == "splunkd is not running."
+  notify:
+    - accept splunk license
+
+- name: Change Splunk Permissions
+  file: 
+    path: /opt/splunkforwarder
+    state: directory
+    recurse: yes
+    owner: splunk
+    group: splunk

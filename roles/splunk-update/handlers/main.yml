@@ -1,0 +1,7 @@
+---
+# file: roles/splunk-forwarder/handlers/main.yml
+
+# splunk
+- name: accept splunk license
+  command: /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes --no-prompt
+
