@@ -1,12 +1,20 @@
 ---
 # file: roles/_common/tasks/splunk-forwarder.yml
 
+- name: Check If Splunk is Already Installed
+  yum:
+    name: splunk
+    state: present
+  register: splunk_installed
+  ignore_errors: true
+
 - name: (CentOS) Install Splunk Forwarder.
   yum:
     name: "{{ splunkf_package_location }}/{{ splunkf_package_rpm }}"
     state: present
   when:
     - ansible_distribution == "CentOS"
+    - splunk_installed is failed
   notify:
     - accept splunk license
     - enable splunk start-on-boot
@@ -20,6 +28,7 @@
     state: present
   when:
     - ansible_distribution == "Ubuntu"
+    - splunk_installed is failed
   notify:
     - accept splunk license
     - enable splunk start-on-boot
@@ -31,6 +40,8 @@
   template:
     src: opt_splunkforwarder_etc_system_local_user-seed.conf
     dest: /opt/splunkforwarder/etc/system/local/user-seed.conf
+  when: 
+    - splunk_installed is failed
   notify:
     - restart splunk forwarder
 
