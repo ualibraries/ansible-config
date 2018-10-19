@@ -2,7 +2,7 @@
 # file: site_splunk_forwarder.yml
 
 - name: Apply common configuration to baseline nodes
-  hosts: archive-test-host 
+  hosts: ansible-test-host2 
   remote_user: inolan
   become: yes
   become_user: root
