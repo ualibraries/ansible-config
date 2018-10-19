@@ -8,5 +8,5 @@
   become_user: root
   gather_facts: true
   roles:
-    - splunk-forwarder
+    - splunk-update
 
