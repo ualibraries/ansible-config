@@ -7,7 +7,7 @@
     state: stopped         # Port should be open
     delay: 0               # No wait before first check (sec)
     timeout: 1             # Stop checking after timeout (sec)
-    msg: "Port 8089 is busy. Splunk may already be installed. Aborting."
+    msg: "Port 8089 is busy. Splunk may already be installed. Aborting Install."
 
 - name: (CentOS) Install Splunk Forwarder.
   yum:
