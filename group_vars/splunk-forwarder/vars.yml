@@ -2,12 +2,8 @@
 # file: group_vars/splunk-forwarder/vars.yml
 
 # Splunk forwarder installation parameters.
-#splunkf_package_location: http://download.splunk.com/products/universalforwarder/releases/7.1.2/linux
-#splunkf_package_rpm: splunkforwarder-7.1.2-a0c72a66db66-linux-2.6-x86_64.rpm
+splunkf_package_location: http://download.splunk.com/products/universalforwarder/releases/7.1.2/linux
+splunkf_package_rpm: splunkforwarder-7.1.2-a0c72a66db66-linux-2.6-x86_64.rpm
 splunkf_package_deb: splunkforwarder-7.1.2-a0c72a66db66-linux-2.6-amd64.deb
 splunkf_admin_username: admin
 splunkf_admin_password: "{{ splunkf_admin_password_v }}"
-
-# Splunk forwarder update parameters.
-splunkf_package_location: http://download.splunk.com/products/universalforwarder/releases/7.2.0/linux
-splunkf_package_rpm: splunkforwarder-7.2.0-8c86330ac18-linux-2.6-x86_64.rpm

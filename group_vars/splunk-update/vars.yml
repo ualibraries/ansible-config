@@ -1,3 +1,6 @@
+---
+# file: group_vars/splunk-update/vars.yml
+
 # Splunk forwarder update parameters.
 splunkf_package_location: http://download.splunk.com/products/universalforwarder/releases/7.2.0/linux
 splunkf_package_rpm: splunkforwarder-7.2.0-8c86330ac18-linux-2.6-x86_64.rpm

@@ -1,14 +1,5 @@
 ---
 # file: roles/splunk-update/handlers/main.yml
 
-# splunk
-- name: Change Splunk Permissions
-  file: 
-    path: /opt/splunkforwarder
-    state: directory
-    recurse: yes
-    owner: splunk
-    group: splunk
-
 - name: Start Splunk and Accept License
   command: /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes --no-prompt

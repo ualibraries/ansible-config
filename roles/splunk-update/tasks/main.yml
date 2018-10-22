@@ -24,8 +24,7 @@
     - ansible_distribution == "CentOS"
     - status.stdout == "splunkd is not running."
   notify:
-    - Change Splunk Permissions
-    #- Start Splunk and Accept License
+    - Start Splunk and Accept License
 
 - name: (Ubuntu) Upgrade Splunk Forwarder.
   apt:
@@ -35,6 +34,12 @@
     - ansible_distribution == "Ubuntu"
     - status.stdout == "splunkd is not running."
   notify:
-    - Change Splunk Permissions
     - Start Splunk and Accept License
     
+- name: Change Splunk Permissions
+  file: 
+    path: /opt/splunkforwarder
+    state: directory
+    recurse: yes
+    owner: splunk
+    group: splunk
