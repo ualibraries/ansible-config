@@ -1,12 +1,12 @@
 ---
 # file: roles/splunk-forwarder/tasks/main.yml
 
-- name: Check all port numbers are accessible from current host
+- name: check to see if splunk is already running
   wait_for:
     port: 8089
-    state: stopped         # Port should be open
+    state: stopped         # Port should be free
     delay: 0               # No wait before first check (sec)
-    timeout: 1             # Stop checking after timeout (sec)
+    timeout: 1             # Check once
     msg: "Port 8089 is busy. Splunk may already be installed. Aborting Install."
 
 - name: (CentOS) Install Splunk Forwarder.
