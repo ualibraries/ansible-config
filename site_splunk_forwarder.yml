@@ -24,7 +24,7 @@
 #     $ ansible-playbook site.yml --ask-vault-pass \
 #                                 --inventory _testing \
 #                                 --limit splunk-forwarder \
-#                                 --tags deploy
+#                                 --tags install
 #
 #     (To delete service nodes:)
 
@@ -32,7 +32,7 @@
 # for the inventory file to affect those service environments.
 
 - name: Install Splunk Forwarder
-  hosts: ansible-test-host2 
+  hosts: splunk-forwarder 
   remote_user: inolan
   become: yes
   become_user: root
@@ -44,7 +44,7 @@
 
 
 - name: Update Splunk Forwarder
-  hosts: ansible-test-host2 
+  hosts: splunk-update
   remote_user: inolan
   become: yes
   become_user: root
