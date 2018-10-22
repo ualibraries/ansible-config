@@ -8,8 +8,6 @@ ansible-test-host2
 [archive-test-host]
 deploy-cent7.library.arizona.edu
 
-[splunk-update]
-deploy-cent7.library.arizona.edu
-
 [splunk-forwarder]
+ansible-test-host2
 deploy-cent7.library.arizona.edu
