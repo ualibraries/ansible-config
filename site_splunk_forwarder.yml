@@ -44,7 +44,7 @@
 
 
 - name: Update Splunk Forwarder
-  hosts: splunk-update
+  hosts: splunk-forwarder
   remote_user: inolan
   become: yes
   become_user: root
