@@ -7,3 +7,7 @@ ansible-test-host2
 
 [archive-test-host]
 deploy-cent7.library.arizona.edu
+
+[splunk-update]
+ansible-test-host
+ansible-test-host2

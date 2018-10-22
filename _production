@@ -1,5 +1,5 @@
 [openaz]
 openaz-prd.library.arizona.edu
 
-[splunk]
+[splunk-forwarder]
 splunk.library.arizona.edu

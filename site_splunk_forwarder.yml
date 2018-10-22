@@ -1,5 +1,35 @@
 ---
 # file: site_splunk_forwarder.yml
+# file: site_openaz.yml
+
+#
+# Service configurations for the Splunk Universal Forwarder; see
+# comments in the "site.yml" file for further information.
+#
+# There are two separate plays in this playbook that use tags to
+# invoke various roles on the service nodes:
+#
+# *   An "install" play that installs a Splunk Universal
+#     Forwarder, and configures its full set up.
+#
+# *   An "update" play that will stop Splunk if needed and
+#     then update Splunk and start it up again.
+#
+# Note that you can also use the "deploy" play to verify that
+# running nodes are in the proper configured state.
+#
+# Sample usage:
+#
+#     (To create or verify service nodes:)
+#     $ ansible-playbook site.yml --ask-vault-pass \
+#                                 --inventory _testing \
+#                                 --limit splunk-forwarder \
+#                                 --tags deploy
+#
+#     (To delete service nodes:)
+
+# In the above commands, you would specify "_staging" or "_production"
+# for the inventory file to affect those service environments.
 
 - name: Install Splunk Forwarder
   hosts: ansible-test-host2 
@@ -9,4 +39,17 @@
   gather_facts: true
   roles:
     - splunk-forwarder
+  tags:
+    - install
 
+
+- name: Update Splunk Forwarder
+  hosts: ansible-test-host2 
+  remote_user: inolan
+  become: yes
+  become_user: root
+  gather_facts: true
+  roles:
+    - splunk-update
+  tags:
+    - update

@@ -1,21 +1,20 @@
 ---
-- name: check splunk status and store stdout to the value in register
-  command: "/opt/splunkforwarder/bin/splunk status"
-  register: command_output
+# This file updates the Splunk Universal Forwarders
+
+- name: 1st Register Splunk Status
+  command: /opt/splunkforwarder/bin/splunk status
+  register: status
   ignore_errors: true
 
-- name: create usable variable 
-  set_fact:
-    status: "{{ command_output.stdout }}"
-
-- name: print usable variable
-  debug:
-    msg: "{{ status }}"
-
-- name: stop splunk
+- name: Stop Splunk
   command: /opt/splunkforwarder/bin/splunk stop
   when:
-    - status != "splunkd is not running."
+    - status.stdout != "splunkd is not running."
+
+- name: 2nd Register Splunk Status
+  command: /opt/splunkforwarder/bin/splunk status
+  register: status
+  ignore_errors: true
 
 - name: (CentOS) Upgrade Splunk Forwarder.
   yum:
@@ -23,14 +22,19 @@
     state: present
   when:
     - ansible_distribution == "CentOS"
-    - status == "splunkd is not running."
+    - status.stdout == "splunkd is not running."
   notify:
-    - accept splunk license
+    - Change Splunk Permissions
+    #- Start Splunk and Accept License
 
-- name: Change Splunk Permissions
-  file: 
-    path: /opt/splunkforwarder
-    state: directory
-    recurse: yes
-    owner: splunk
-    group: splunk
+- name: (Ubuntu) Upgrade Splunk Forwarder.
+  apt:
+    deb: "{{ splunkf_package_location }}/{{ splunkf_package_deb }}"
+    state: present
+  when:
+    - ansible_distribution == "Ubuntu"
+    - status.stdout == "splunkd is not running."
+  notify:
+    - Change Splunk Permissions
+    - Start Splunk and Accept License
+    
