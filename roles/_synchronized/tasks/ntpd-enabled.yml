@@ -1,0 +1,62 @@
+---
+# file: roles/_synchronized/tasks/ntpd-enabled.yml
+
+- block:
+
+    - name: (CentOS) Disable chronyd.
+      systemd:
+        name: chronyd
+        enabled: no
+        masked: yes
+        state: stopped
+        
+    - name: (CentOS) Install ntpd via yum.
+      yum:
+        name: ntp
+        state: present
+        
+    - name: (CentOS) Enable and start ntpd.
+      systemd:
+        name: ntpd
+        enabled: yes
+        masked: no
+        state: started
+
+    - name: (CentOS) Apply common ntp configuration.
+      template:
+        src: etc_ntp.conf.centos
+        dest: /etc/ntp.conf
+      notify: ... restart ntpd.
+
+  when:
+    - ansible_distribution == 'CentOS'
+
+- block:
+
+    - name: (Ubuntu) Disable timesyncd.
+      systemd:
+        name: timesyncd
+        enabled: no
+        masked: yes
+        state: stopped
+        
+    - name: (Ubuntu) Install ntpd via apt.
+      apt:
+        name: ntp
+        state: present
+        
+    - name: (Ubuntu) Enable and start ntp.
+      systemd:
+        name: ntp
+        enabled: yes
+        masked: no
+        state: started
+
+    - name: (Ubuntu) Apply common ntp configuration.
+      template:
+        src: etc_ntp.conf.ubuntu
+        dest: /etc/ntp.conf
+      notify: ... restart ntp.
+
+  when:
+    - ansible_distribution == 'Ubuntu'

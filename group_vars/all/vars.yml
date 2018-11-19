@@ -3,7 +3,7 @@
 
 # Virtualization platform parameters.
 
-vmware_vcenter_host: vc1.library.arizona.edu
+vmware_vcenter_host: control1-smplv.library.arizona.edu
 vmware_vcenter_admin_username: administrator@vsphere.local
 vmware_vcenter_admin_password: "{{ vmware_vcenter_admin_password_v }}"
 vmware_vcenter_validate_certs: no
@@ -16,17 +16,14 @@ vmware_guest_name: "{{ vm_hostname }}"
 vmware_guest_network_name: "Public Network (199)"
 vmware_guest_device_type: vmxnet3
 
-# Splunk forwarder installation parameters.
-  
-splunkf_package_location: http://download.splunk.com/products/universalforwarder/releases/7.1.2/linux
-splunkf_package_rpm: splunkforwarder-7.1.2-a0c72a66db66-linux-2.6-x86_64.rpm
-splunkf_package_deb: splunkforwarder-7.1.2-a0c72a66db66-linux-2.6-amd64.deb
-splunkf_admin_username: admin
-splunkf_admin_password: "{{ splunkf_admin_password_v }}"
-
 # Qumulo NFS mount options.
 
 qnas_nfs_opts: "nfsvers=3,proto=tcp,intr,hard,noatime,nodiratime,timeo=100,retrans=2,acdirmin=120,acdirmax=240"
+
+# Campus NTP server pool hosts.
+
+ntp_pool_0: 0.pool.ntp.arizona.edu
+ntp_pool_1: 1.pool.ntp.arizona.edu
 
 # User account parameters.
 
@@ -127,4 +124,3 @@ user_accounts:
     public_key: |
       ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5ZMFr9hpQPoBA0Rk55xxFQzyns0glDriDoaMLpsWVewdEfQz5NoWeO4B06Iu40bzkp31fx2kAUWSlEjNz0ugywVrhxU6ev8DVcrfMmRq3bxtR4G2WwV0+prImYl9RycJt1MAZ9iE/XTjbhWt2AL+P0Bf5+pykLJFbxxqDZ8KLYktTWOAuL8xn6al1IlGn9eGIPbpHAdU1ZQonYVfRibpL2LUm2OzxQLrYvIi1hgty9Fqje3v3s2T+tFSqJ/Z4+fKAY6q8CFrV8uBDkD9EfURfog+NfwqwD1IEQELmSb4lFNRQ9qJ7aRCyhLuLk41DeYFWFYluhv0m+sWd8CO2OS9QROUMr0le2E1dfUFrzIaL81HVVCcHwSyull04TLnOKj9SG2j4QOu/oaHVhZXa2SkoBUeZj8/wmP442Hld35Dk3CgyBKeaaXjHW+/iKBuQ/ocB/Pq73VOGZ37bQZMlQwijcLjcD3h1uCARPz22cF3QwKu1O/Ic9ipks+UoT7OtOD4xaj8Yvsrb4iqvdcIgmh1KT4WC1PLhpjGM0DlaMNNujbUX0xbaNwBEDUy56nT/Z1e2PCzB995g/q7kxq8uU66052KhVhfQItYomX2/Fq7J2Iluilsl20PddaOrt6XfhibE+FYFE3OFVQ4dCoehVLuBd3mmg5zWanLQCwAIaYmthw== wsimpson@email.arizona.edu
     use_sudo: yes
-

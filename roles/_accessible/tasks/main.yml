@@ -1,0 +1,5 @@
+---
+# file: roles/_accessible/tasks/main.yml
+
+- import_tasks: sshd-running.yml
+- import_tasks: user-accounts-created.yml

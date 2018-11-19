@@ -1,0 +1,12 @@
+---
+# file: roles/_synchronized/handlers/main.yml
+
+- name: ... restart ntpd.
+  systemd:
+    name: ntpd
+    state: restarted
+
+- name: ... restart ntp.
+  systemd:
+    name: ntp
+    state: restarted

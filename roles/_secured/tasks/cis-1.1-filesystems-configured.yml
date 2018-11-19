@@ -1,0 +1,180 @@
+---
+# file: roles/_secured/tasks/cis-1.1-filesystems-configured.yml
+
+- name: "Configure filesystems:"
+  block:
+
+    - name: Disable unused filesystem kernel modules.
+      template:
+        src: etc_modprobe.d_CIS.conf
+        dest: /etc/modprobe.d/CIS.conf
+      notify: ... unload disabled filesystem kernel modules.
+
+    - name: "On a CentOS system:"
+      block:
+
+        - name: (CentOS) Verify separate /tmp partition with secure options set.
+          mount:
+            src: /dev/mapper/centos-tmp
+            path: /tmp
+            fstype: xfs
+            opts: defaults,nodev,nosuid,noexec
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (CentOS) Verify separate /var partition.
+          mount:
+            src: /dev/mapper/centos-var
+            path: /var
+            fstype: xfs
+            opts: defaults
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (CentOS) Verify separate /var/tmp partition with secure options set.
+          mount:
+            src: /dev/mapper/centos-var_tmp
+            path: /var/tmp
+            fstype: xfs
+            opts: defaults,nodev,nosuid,noexec
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (CentOS) Verify separate /var/log partition.
+          mount:
+            src: /dev/mapper/centos-var_log
+            path: /var/log
+            fstype: xfs
+            opts: defaults
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (CentOS) Verify separate /var/log/audit partition.
+          mount:
+            src: /dev/mapper/centos-var_log_audit
+            path: /var/log/audit
+            fstype: xfs
+            opts: defaults
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (CentOS) Verify separate /home partition with secure options set.
+          mount:
+            src: /dev/mapper/centos-home
+            path: /home
+            fstype: xfs
+            opts: defaults,nodev
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (CentOS) Set secure options on /dev/shm.
+          mount:
+            src: tmpfs
+            path: /dev/shm
+            fstype: tmpfs
+            opts: defaults,nodev,nosuid,noexec
+            dump: 0
+            passno: 0
+            state: mounted
+
+      when:
+        - ansible_distribution == 'CentOS'
+
+    - name: "On an Ubuntu system:"
+      block:
+
+        - name: (Ubuntu) Verify separate /tmp partition with secure options set.
+          mount:
+            src: /dev/mapper/ubuntu-tmp
+            path: /tmp
+            fstype: ext4
+            opts: defaults,nodev,nosuid,noexec
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (Ubuntu) Verify separate /var partition.
+          mount:
+            src: /dev/mapper/ubuntu-var
+            path: /var
+            fstype: ext4
+            opts: defaults
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (Ubuntu) Verify separate /var/tmp partition with secure options set.
+          mount:
+            src: /dev/mapper/ubuntu-var_tmp
+            path: /var/tmp
+            fstype: ext4
+            opts: defaults,nodev,nosuid,noexec
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (Ubuntu) Verify separate /var/log partition.
+          mount:
+            src: /dev/mapper/ubuntu-var_log
+            path: /var/log
+            fstype: ext4
+            opts: defaults
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (Ubuntu) Verify separate /var/log/audit partition.
+          mount:
+            src: /dev/mapper/ubuntu-var_log_audit
+            path: /var/log/audit
+            fstype: ext4
+            opts: defaults
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (Ubuntu) Verify separate /home partition with secure options set.
+          mount:
+            src: /dev/mapper/ubuntu-home
+            path: /home
+            fstype: ext4
+            opts: defaults,nodev
+            dump: 0
+            passno: 0
+            state: mounted
+
+        - name: (Ubuntu) Set secure options on /dev/shm.
+          mount:
+            src: tmpfs
+            path: /dev/shm
+            fstype: tmpfs
+            opts: defaults,nodev,nosuid,noexec
+            dump: 0
+            passno: 0
+            state: mounted
+        
+      when:
+        - ansible_distribution == 'Ubuntu'
+    
+    - name: Verify sticky bit set on world-writeable directories.
+      shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null
+      register: find_unset_sticky_bits
+      changed_when: "find_unset_sticky_bits.stdout != ''"
+      notify:
+        - ... fix sticky bits on world-writeable directories.
+
+    - name: Disable automounting.
+      systemd:
+        name: autofs
+        enabled: no
+        masked: yes
+        state: stopped
+
+  tags:
+    - secure_filesystems

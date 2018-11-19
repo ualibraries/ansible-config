@@ -6,6 +6,7 @@
 vm_hostname: centos7-baseline
 vm_domain: library.arizona.edu
 vm_fqdn: "{{ vm_hostname }}.{{ vm_domain }}"
+vm_tzone: America/Phoenix
 
 vm_net_name: ens192
 vm_net_type: static

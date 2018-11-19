@@ -1,0 +1,4 @@
+---
+# file: roles/_identified/tasks/main.yml
+
+- import_tasks: host-keys-set.yml

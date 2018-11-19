@@ -1,0 +1,47 @@
+---
+# file: site_splunkf.yml
+
+#
+# Ansible plays for installing and updating Splunk Universal Forwarder
+# service nodes.
+#
+# Sample usage:
+#
+#     (To install the Splunk Forwarder:)
+#     $ ansible-playbook site_splunkf.yml --ask-vault-pass \
+#                                         --inventory _testing \
+#                                         --limit splunkf \
+#                                         --tags install
+#
+#     (To update the Splunk Forwarder:)
+#     $ ansible-playbook site_splunkf.yml --ask-vault-pass \
+#                                         --inventory _testing \
+#                                         --limit splunkf \
+#                                         --tags update
+#
+# In the above commands, you could also specify "_staging" or
+# "_production" for the inventory file to affect those service
+# environments instead of "_testing".
+#
+
+- name: "Installing Splunk Universal Forwarder:"
+  hosts: splunkf
+  remote_user: ansible-admin
+  become: yes
+  become_user: root
+  gather_facts: true
+  roles:
+    - splunkf-installed
+  tags:
+    - install
+
+- name: "Updating Splunk Universal Forwarder:"
+  hosts: splunkf
+  remote_user: ansible-admin
+  become: yes
+  become_user: root
+  gather_facts: true
+  roles:
+    - splunkf-updated
+  tags:
+    - update

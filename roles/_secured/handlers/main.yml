@@ -1,0 +1,32 @@
+---
+# file: roles/_secured/handlers/main.yml
+
+- name: ... unload disabled filesystem kernel modules.
+  modprobe:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - cramfs
+    - freevxfs
+    - jffs2
+    - hfs
+    - hfsplus
+    - squashfs
+    - udf
+    - vfat
+
+- name: ... fix sticky bits on world-writeable directories.
+  shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
+
+- name: ... restart iptables.
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+  loop:
+    - iptables
+    - ip6tables
+
+- name: ... restart netfilter.
+  systemd:
+    name: netfilter-persistent
+    state: restarted

@@ -2,16 +2,32 @@
 # file: site_baseline.yml
 
 #
-# Used to apply the "_common" role to our baseline client nodes,
-# which then become the virtual machine templates used for our
-# service nodes.
+# Ansible plays for applying the system roles to our baseline nodes,
+# which then become the virtual machine templates used for our service
+# nodes.
+#
+# Sample usage:
+#
+#     (To apply common configurations to baseline nodes:)
+#     $ ansible-playbook site_baseline.yml --ask-vault-pass \
+#                                          --inventory _support \
+#                                          --limit baseline
+#
+# Note that for the _secured role, which implements CIS security
+# benchmark configurations, you can use tags to limit which rules
+# are applied -- see the associated task files under that role for
+# more specifics.
+#
 
-- name: Apply common configuration to baseline nodes
+- name: "Applying common configurations to baseline nodes:"
   hosts: baseline
   remote_user: ansible-admin
   become: yes
   become_user: root
   gather_facts: true
   roles:
-    - _common
-
+    - _identified
+    - _equipped
+    - _accessible
+    - _synchronized
+    - _secured

@@ -1,0 +1,13 @@
+---
+# file: roles/_accessible/tasks/sshd-running.yml
+
+- name: Install sshd service.
+  package:
+    name: openssh-server
+    state: present
+
+- name: Start sshd service.
+  service:
+    name: sshd
+    enabled: true
+    state: started

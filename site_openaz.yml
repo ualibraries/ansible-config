@@ -2,72 +2,68 @@
 # file: site_openaz.yml
 
 #
-# Service configurations for the Open Arizona service nodes; see
-# comments in the "site.yml" file for further information.
-#
-# There are three separate plays in this playbook that use tags to
-# invoke various roles on the service nodes, to establish a node
-# lifecycle of provisioning, deploying, and removing.
-# 
-# Note that you can also use the "deploy" play to verify that
-# running nodes are in the proper configured state.
+# Ansible plays for provisioning, deploying, and removing Open Arizona
+# service nodes.
 #
 # Sample usage:
 #
-#     (To provision service nodes:)
+#     (To provision Open Arizona service nodes:)
 #     $ ansible-playbook site.yml --ask-vault-pass \
 #                                 --inventory _testing \
 #                                 --limit openaz \
 #                                 --tags provision
 #
-#     (To deploy service nodes:)
+#     (To deploy Open Arizona service configuration to provisioned nodes:)
 #     $ ansible-playbook site.yml --ask-vault-pass \
 #                                 --inventory _testing \
 #                                 --limit openaz \
 #                                 --tags deploy
 #
-#     (To remove service nodes:)
+#     (To remove Open Arizona service nodes:)
 #     $ ansible-playbook site.yml --ask-vault-pass \
 #                                 --inventory _testing \
 #                                 --limit openaz \
 #                                 --tags remove
 #
-# In the above commands, you would specify "_staging" or "_production"
-# for the inventory file to affect those service environments
-# instead of "_testing".
+# In the above commands, you could also specify "_staging" or
+# "_production" for the inventory file to affect those service
+# environments instead of "_testing".
 #
 
-- name: Provision Open Arizona service nodes
+- name: "Provisioning Open Arizona service nodes:"
   hosts: openaz
   remote_user: ansible-admin
   become: yes
   become_user: root
   gather_facts: false
   roles:
-    - _provision
+    - _provisioned
   tags:
     - provision
 
-- name: Deploy Open Arizona service nodes
+- name: "Deploying Open Arizona service nodes:"
   hosts: openaz
   remote_user: ansible-admin
   become: yes
   become_user: root
   gather_facts: true
   roles:
-    - _common
-    - openaz
+    - _identified
+    - _equipped
+    - _accessible
+    - _synchronized
+    - _secured
+    - splunkf-installed
   tags:
     - deploy
     
-- name: Remove Open Arizona service nodes
+- name: "Removing Open Arizona service nodes:"
   hosts: openaz
   remote_user: ansible-admin
   become: yes
   become_user: root
   gather_facts: false
   roles:
-    - openaz-quiesce
-    - _remove
+    - _removed
   tags:
     - remove
