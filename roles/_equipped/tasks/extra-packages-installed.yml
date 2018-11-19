@@ -1,0 +1,40 @@
+---
+# file: roles/_equipped/tasks/extra-packages-installed.yml
+
+- block:
+    
+    - name: (CentOS) Install extra packages via yum.
+      yum:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+          - vim
+          - emacs
+          - nfs-utils
+          - open-vm-tools
+          - python
+          - sysstat
+          - zsh
+
+  when:
+    - ansible_distribution == "CentOS"
+
+- block:
+
+    - name: (Ubuntu) Install extra packages via apt.
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+          - vim
+          - emacs
+          - nfs-common
+          - open-vm-tools
+          - python
+          - sysstat
+          - zsh
+          
+  when:
+    - ansible_distribution == "Ubuntu"

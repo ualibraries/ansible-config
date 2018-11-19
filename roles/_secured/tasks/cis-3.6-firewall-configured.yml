@@ -1,0 +1,84 @@
+---
+# file: roles/_secured/tasks/cis-3.6-firewall-configured.yml
+
+- name: "Configure firewall:"
+  block:
+
+    - name: "On a CentOS system:"
+      block:
+
+        - name: (Centos) Disable firewalld.
+          systemd:
+            name: firewalld
+            enabled: no
+            masked: yes
+            state: stopped
+
+        - name: (CentOS) Install iptables.
+          yum:
+            name: iptables-services
+            state: present
+
+        - name: (CentOS) Enable and start iptables.
+          systemd:
+            name: "{{ item }}"
+            enabled: yes
+            masked: no
+            state: started
+          loop:
+            - iptables
+            - ip6tables
+
+        - name: (Centos) Apply common iptables ruleset.
+          template:
+            src: "{{ item.src }}"
+            dest: "{{ item.dest }}"
+          loop:
+            - { src: "etc_sysconfig_iptables", dest: "/etc/sysconfig/iptables" }
+            - { src: "etc_sysconfig_ip6tables", dest: "/etc/sysconfig/ip6tables" }
+          notify:
+            - ... restart iptables.
+        
+      when:
+        - ansible_distribution == 'CentOS'
+
+    - name: "On an Ubuntu system:"
+      block:
+        
+        - name: (Ubuntu) Disable ufw.
+          systemd:
+            name: ufw
+            enabled: no
+            masked: yes
+            state: stopped
+
+        - name: (Ubuntu) Install iptables and netfiter support.
+          apt:
+            name: "{{ item }}"
+            state: present
+          loop:
+            - iptables-persistent
+            - netfilter-persistent
+
+        - name: (Ubuntu) Enable and start netfilter.
+          systemd:
+            name: netfilter-persistent
+            enabled: yes
+            masked: no
+            state: started
+
+        - name: (Ubuntu) Apply common iptables ruleset.
+          template:
+            src: "{{ item.src }}"
+            dest: "{{ item.dest }}"
+          loop:
+            - { src: "etc_sysconfig_iptables", dest: "/etc/iptables/rules.v4" }
+            - { src: "etc_sysconfig_ip6tables", dest: "/etc/iptables/rules.v6" }
+          notify:
+            - ... restart netfilter.
+        
+      when:
+        - ansible_distribution == 'Ubuntu'
+
+  tags:
+    - secure_firewall

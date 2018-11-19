@@ -1,0 +1,49 @@
+---
+# file: roles/splunkf-updated/tasks/main.yml
+
+- name: Check for previously installed splunk forwarder.
+  stat:
+    path: /opt/splunkforwarder
+  register: splunkf_install_dir
+
+- name: "Update splunk forwarder:"
+  block:
+
+    - name: Stop splunk forwarder.
+      command: /opt/splunkforwarder/bin/splunk stop
+
+    - name: "On a CentOS system:"
+      block:
+
+        - name: (CentOS) Upgrade splunk forwarder via yum.
+          yum:
+            pkg: "{{ splunkf_package_location }}/{{ splunkf_package_rpm }}"
+            state: present
+
+      when:
+        - ansible_distribution == 'CentOS'
+
+    - name: "On an Ubuntu system:"
+      block:
+
+        - name: (Ubuntu) Upgrade splunk forwarder via apt.
+          apt:
+            deb: "{{ splunkf_package_location }}/{{ splunkf_package_deb }}"
+            state: present
+
+      when:
+        - ansible_distribution == 'Ubuntu'
+
+    - name: Fix splunk permissions.
+      file:
+        path: /opt/splunkforwarder
+        state: directory
+        recurse: yes
+        owner: splunk
+        group: splunk
+
+    - name: Start splunk forwarder and accept license.
+      command: /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes --no-prompt
+        
+  when:
+    - splunkf_install_dir.stat.exists == True

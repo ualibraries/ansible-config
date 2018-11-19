@@ -45,13 +45,13 @@
 	
 ## Create virtual machine.
 
-*   Navigated to https://vc1.library.arizona.edu/, clicked the
+*   Navigated to https://control1-smplv.library.arizona.edu/, clicked the
     link to access the **vSphere Web Client (Flash)**, and logged in
     using the "administrator@vsphere.local" credentials.
 	
 *   Navigated to:
 
-        control1.library.arizona.edu -> LCU -> SMPLV-C1 -> (right click) -> New Virtual Machine...
+        control1-smplv.library.arizona.edu -> LCU -> SMPLV-C1 -> (right click) -> New Virtual Machine...
 	
 	and filled in parameters as follows:
 
@@ -80,13 +80,13 @@
 
 *   Still in the **vSphere Web Client (Flash)**, navigated to:
 
-        control1.library.arizona.edu -> LCU -> SMPLV-C1 -> centos7-baseline -> Configure -> VM hardware -> Edit... -> Virtual Hardware
+        control1-smplv.library.arizona.edu -> LCU -> SMPLV-C1 -> centos7-baseline -> Configure -> VM hardware -> Edit... -> Virtual Hardware
 		
 	and added the CentOS 7 installation ISO as follows:
     
              CD/DVD drive 1: Datastore ISO file
                      Status: Connect at power on (checked)
-               CD/DVD Media: (SMPLV-ISO) Linux ISOs/CentOS-7-x86_64-Minimal-1708.iso
+               CD/DVD Media: (SMPLV-ISO) Linux ISOs/CentOS-7-x86_64-Minimal-1804.iso
                 Device mode: (greyed out)
         Virtual device node: SATA controller 0, SATA(0:0)
         
@@ -94,7 +94,7 @@
 	
 *   Navigated to:
 	
-		control1.library.arizona.edu -> LCU -> SMPLV-C1 -> centos7-baseline -> Actions -> Power -> Power on
+		control1-smplv.library.arizona.edu -> LCU -> SMPLV-C1 -> centos7-baseline -> Actions -> Power -> Power on
 
     and then brought up the console.
 	
@@ -122,7 +122,7 @@
 			    /home               4598 MiB   centos-home
 					
 		Kdump: Kdump is enabled
-		Network & host name: Wires (ens192) connected
+		Network & host name: Wired (ens192) connected
 
 		    Connection name: ens192
 			Address: 10.130.155.10
@@ -132,7 +132,7 @@
 			Search domains: library.arizona.edu
 			Host name: centos7-baseline
 			
-		Security policy: Standard system security policy, Everything okay
+		Security policy: No profile selected.
 		Root password: (set root password)
 		Create User: (no user created)
 		
@@ -143,8 +143,9 @@
 	virtual machine, reconfigured to remove the DVD mount-on-boot, and
     then rebooted a second time to get to the newly-installed OS.
 
-*   Once the centos7-baseline virtual machine finished rebooting, logged into
-    the root account via the console and via SSH to verify access.
+*   Once the centos7-baseline virtual machine finished rebooting,
+    logged into the root account via the console and via SSH to verify
+    access using the root account.
 
 ## Post-installation setup.
 
@@ -180,7 +181,7 @@
         
         (verify ansible-admin account locked:)
         # passwd -S ansible-admin
-		ansible-admin LK 2018-08-16 0 99999 7 -1 (Password locked.)
+		ansible-admin LK 2018-11-01 0 99999 7 -1 (Password locked.)
 
         (verify local access and install authorized keys:)
         # su - ansible-admin
@@ -198,7 +199,7 @@
         
             (added no-password privilege escalation for "ansible-admin" user)
 
-## Convert to template and capture state zero.
+## Convert to template and capture state.
 
 *   In a **terminal**, logged into centos7-baseline as "root":
 
@@ -206,17 +207,20 @@
 
 *   In the **vSphere Web Client (Flash)**, navigated to:
 
-        control1.library.arizona.edu -> LCU -> SMPLV-C1 -> centos7-baseline ->
+        control1-smplv.library.arizona.edu -> LCU -> SMPLV-C1 -> centos7-baseline ->
         (right-click) -> Template -> Convert to Template
 
-*   Still in vSphere, created a SimpliVity backup of the template VM as:
+*   In the **vSphere Web Client (Flash)**, navigated to:
 
-                VM template: centos7-baseline
-		            Cluster: SMPLV-C1
-		            vCenter: control1.library.arizona.edu
-		          Datastore: SMPLV-DS2
-		               Host: smplv1-1-vkm.library.arizona.edu
-		        Backup name: centos7-baseline-0
-		Destination cluster: SMPLV-C1
+        control1-smplv.library.arizona.edu -> LCU -> SMPLV-C1 -> centos7-baseline ->
+        (right-click) -> Clone to Template
 		
-	and clicked "Ok".
+		  Provisioning type: Clone template to template
+		    Source template: centos7-baseline
+		      Template name: centos7-baseline-20181102-1
+		             Folder: Service Templates
+		               Host: smplv1-2-vkm.library.arizona.edu
+		          Datastore: SMPLV-DS2
+		       Disk storage: Same format as source
+
+    and clicked "Finish".

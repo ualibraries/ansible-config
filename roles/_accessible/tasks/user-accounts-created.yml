@@ -1,0 +1,27 @@
+#
+# file: roles/_accessible/tasks/user-accounts-created.yml
+
+- name: Create user accounts.
+  user: 
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    comment: "{{ item.comment }}"
+    shell: "{{ item.shell }}"
+    state: present 
+  loop: "{{ user_accounts }}"
+
+- name: Add user public keys.
+  authorized_key:
+    user:  "{{ item.name }}"
+    key: "{{ item.public_key }}"
+    state: present
+  loop: "{{ user_accounts }}"
+
+- name: Add privileged users to /etc/sudoers file.
+  lineinfile:
+    path: /etc/sudoers
+    insertafter: EOF
+    line: '{{ item.name }} ALL=(ALL) NOPASSWD: ALL'
+    state: present
+  when: 'item.use_sudo == True'
+  loop: "{{ user_accounts }}"

@@ -45,13 +45,13 @@
 
 ## Create virtual machine.
 
-*   Navigated to https://vc1.library.arizona.edu/, clicked the
+*   Navigated to https://control1-smplv.library.arizona.edu/, clicked the
     link to access the **vSphere Web Client (Flash)**, and logged in
     using the "administrator@vsphere.local" credentials.
 	
 *   Navigated to:
 
-        control1.library.arizona.edu -> LCU -> SMPLV-C1 -> (right click) -> New Virtual Machine...
+        control1-smplv.library.arizona.edu -> LCU -> SMPLV-C1 -> (right click) -> New Virtual Machine...
 	
 	and filled in parameters as follows:
 
@@ -80,13 +80,13 @@
 
 *   Still in the **vSphere Web Client (Flash)**, navigated to:
 
-        control1.library.arizona.edu -> LCU -> SMPLV-C1 -> ubuntu16-baseline -> Configure -> VM hardware -> Edit... -> Virtual Hardware
+        control1-smplv.library.arizona.edu -> LCU -> SMPLV-C1 -> ubuntu16-baseline -> Configure -> VM hardware -> Edit... -> Virtual Hardware
 		
 	and added the Ubuntu 16 installation ISO as follows:
     
              CD/DVD drive 1: Datastore ISO file
                      Status: Connect at power on (checked)
-               CD/DVD Media: (SMPLV-ISO) Linux ISOs/ubuntu-16.04.4-server-amd64.iso
+               CD/DVD Media: (SMPLV-ISO) Linux ISOs/ubuntu-16.04.5-server-amd64.iso
 			    Device mode: (greyed out)
         Virtual device node: SATA controller 0, SATA(0:0)
         
@@ -94,11 +94,11 @@
 	
 *   Navigated to:
 	
-		control1.library.arizona.edu -> LCU -> SMPLV-C1 -> ubuntu16-baseline -> Actions -> Power -> Power on
+		control1-smplv.library.arizona.edu -> LCU -> SMPLV-C1 -> ubuntu16-baseline -> Actions -> Power -> Power on
 
     and then brought up the console.
 	
-*   In the console, went through the Ubuntu installation process as follow:
+*   In the console, went through the Ubuntu installation process as follows:
 
         Console -> English -> Install Ubuntu Server
         
@@ -116,8 +116,8 @@
                 Domain name: library.arizona.edu
                 User account:
                 
-                    Full name: Mike Simpson
-                    Username: mgsimpson
+                    Full name: Temporary User
+                    Username: temporary
 					Password: (password)
                     Encrypt home directory: No
                 
@@ -149,50 +149,49 @@
 	virtual machine, reconfigured to remove the DVD mount-on-boot, and
     then rebooted a second time to get to the newly-installed OS.
 
-*   Once the ubuntu16-baseline virtual machine finished rebooting,
-    logged into the "mgsimpson" account via the console and via SSH to
-    verify access.
+*   Once the reboot was finished, logged in via the console, enabled
+    remote root login in /etc/ssh/sshd_config, set a root password,
+    and verified console and SSH access to the root account; then
+    deleted the "temporary" user set up during installation.
 
 ## Post-installation setup.
 
 ### Install VMware tools and patch to current.
 
-*   In a **terminal**, logged into ubuntu16-baseline as "mgsimpson":
+*   In a **terminal**, logged into ubuntu16-baseline as "root":
 
-        $ sudo apt-get install open-vm-tools
-		$ sudo apt update
-		$ sudo apt upgrade
-		$ sudo reboot
+        # apt-get install open-vm-tools
+		# apt update
+		# apt upgrade
+		# reboot
 
 ## Add ping-on-reboot crontab entry for ARP cache refresh.
 
-*   In a **terminal**, logged into ubuntu16-baseline as "mgsimpson":
+*   In a **terminal**, logged into ubuntu16-baseline as "root":
 
-        $ sudo su -
-		
-		    # crontab -e
-            (edited crontab)
+	    # crontab -e
+        (edited crontab)
 
-            # crontab -l
-            @reboot ping -c 3 `ip route show | grep -oP '(?<=^default via )(.*)(?= dev ens160)'` > ping.boot
+        # crontab -l
+        @reboot ping -c 3 `ip route show | grep -oP '(?<=^default via )(.*)(?= dev ens160)'` > ping.boot
 
 ### Install Ansible client node prerequisites.
 
-*   In a **terminal**, logged into ubuntu16-baseline as "mgsimpson":
+*   In a **terminal**, logged into ubuntu16-baseline as "root":
 
 	    (installed python interpreter:)
-	    $ sudo apt-get install python
+	    # apt-get install python
 		
 		(create ansible-admin group and user:)
-        $ sudo groupadd -g 5000 ansible
-        $ sudo useradd -c "Ansible Admin" -d /etc/ansible -m -g ansible -s /bin/bash -u 5000 ansible-admin
+        # groupadd -g 5000 ansible
+        # useradd -c "Ansible Admin" -d /etc/ansible -m -g ansible -s /bin/bash -u 5000 ansible-admin
         
         (verify ansible-admin account locked:)
-        $ sudo  passwd -S ansible-admin
-		ansible-admin L 08/17/2018 0 99999 7 -1
+        # passwd -S ansible-admin
+		ansible-admin L 11/02/2018 0 99999 7 -1
 
         (verify local access and install authorized keys:)
-        $ sudo su - ansible-admin
+        # su - ansible-admin
             
             $ mkdir -m 0700 .ssh
             $ vi .ssh/authorized_keys
@@ -203,29 +202,32 @@
             $ exit
 
         (enable privilege escalation for ansible admin user:)
-        $ sudo visudo
+        # visudo
         
             (added no-password privilege escalation for "ansible-admin" user)
 
-## Convert to template and capture state zero.
+## Convert to template and capture state.
 
-*   In a **terminal**, logged into ubuntu16-baseline as "mgsimpson":
+*   In a **terminal**, logged into ubuntu16-baseline as "root":
 
-        $ sudo shutdown -h now
+        # shutdown -h now
 
 *   In the **vSphere Web Client (Flash)**, navigated to:
 
-        control1.library.arizona.edu -> LCU -> SMPLV-C1 -> ubuntu16-baseline ->
+        control1-smplv.library.arizona.edu -> LCU -> SMPLV-C1 -> ubuntu16-baseline ->
         (right-click) -> Template -> Convert to Template
 
-*   Still in vSphere, created a SimpliVity backup of the template VM as:
+*   In the **vSphere Web Client (Flash)**, navigated to:
 
-                VM template: ubuntu16-baseline
-		            Cluster: SMPLV-C1
-		            vCenter: control1.library.arizona.edu
-		          Datastore: SMPLV-DS2
-		               Host: smplv1-1-vkm.library.arizona.edu
-		        Backup name: ubuntu16-baseline-0
-		Destination cluster: SMPLV-C1
+        control1-smplv.library.arizona.edu -> LCU -> SMPLV-C1 -> ubuntu16-baseline ->
+        (right-click) -> Clone to Template
 		
-	and clicked "Ok".
+		  Provisioning type: Clone template to template
+		    Source template: ubuntu16-baseline
+		      Template name: ubuntu16-baseline-20181102-1
+		             Folder: Service Templates
+		               Host: smplv1-2-vkm.library.arizona.edu
+		          Datastore: SMPLV-DS2
+		       Disk storage: Same format as source
+
+    and clicked "Finish".

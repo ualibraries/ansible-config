@@ -1,0 +1,4 @@
+---
+# file: roles/_equipped/tasks/main.yml
+
+- import_tasks: extra-packages-installed.yml

@@ -1,0 +1,5 @@
+---
+# file: roles/_synchronized/tasks/main.yml
+
+- import_tasks: timezone-set.yml
+- import_tasks: ntpd-enabled.yml
