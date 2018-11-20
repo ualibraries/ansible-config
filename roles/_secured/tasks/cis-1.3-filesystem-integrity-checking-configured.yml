@@ -14,7 +14,7 @@
 
         - name: (CentOS) set aide.conf
           copy:
-            src: etc_aide.conf
+            src: etc_centos_aide.conf
             dest: /etc/aide.conf
 
         - name: (CentOS) initialize AIDE database
@@ -49,7 +49,7 @@
 
         - name: (Ubuntu) set aide.conf
           copy:
-            src: etc_aide.conf
+            src: etc_ubuntu_aide.conf
             dest: /etc/aide/aide.conf
 
         - name: (Ubuntu) initialize AIDE database
@@ -61,7 +61,7 @@
         - name: (Ubuntu) copy aide.sh file
           copy:
             src: usr_local_bin_aide.sh
-            dest: /usr/local/bin/aide/aide.sh 
+            dest: /usr/local/bin/aide.sh 
         
         - name: (Ubuntu) run AIDE report
           cron:
@@ -75,4 +75,4 @@
         - ansible_distribution == 'Ubuntu'  
 
   tags:
-    - integrity_checking_filesystems
+    - secure_filesystem_integrity_checking

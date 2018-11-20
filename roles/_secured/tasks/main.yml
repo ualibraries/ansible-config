@@ -3,7 +3,7 @@
 
 - import_tasks: cis-1.1-filesystems-configured.yml
 #- import_tasks: cis-1.2-software-updates-configured.yml
-#- import_tasks: cis-1.3-filesystem-integrity-checking-configured.yml
+- import_tasks: cis-1.3-filesystem-integrity-checking-configured.yml
 #- import_tasks: cis-1.4-secure-boot-settings-configured.yml
 #- import_tasks: cis-1.5-additional-process-hardening-configured.yml
 #- import_tasks: cis-1.6-mandatory-access-control-configured.yml
