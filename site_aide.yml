@@ -1,0 +1,12 @@
+---
+
+- name: "Installing AIDE:"
+  hosts: _test
+  remote_user: ansible-admin
+  become: yes
+  become_user: root
+  gather_facts: true
+  roles:
+    - _secured
+  tags:
+    - integrity_checking_filesystems
