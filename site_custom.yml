@@ -1,0 +1,30 @@
+---
+# file: site_custom.yml
+
+#
+# Ansible plays for ad-ho use.
+#
+# Sample usage:
+#
+#     (To install the Splunk Forwarder:)
+#     $ ansible-playbook site_custom.yml --ask-vault-pass \
+#                                         --inventory _scratch \
+#                                         --limit scratch \
+#                                         --tags install
+#
+#
+# In the above commands, you could also specify "_staging" or
+# "_production" for the inventory file to affect those service
+# environments instead of "_testing".
+#
+
+- name: "Running Custom Plays:"
+  hosts: scratch
+  remote_user: inolan
+  become: yes
+  become_user: root
+  gather_facts: true
+  roles:
+    - _secured
+  tags:
+    - secure_filesystem_integrity_checking
