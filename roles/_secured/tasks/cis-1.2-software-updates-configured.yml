@@ -13,9 +13,9 @@
             dest: /usr/local/bin/check-yum-updates.sh
             mode: 0755
 
-        - name: (CentOS) Create /var/log/update
+        - name: (CentOS) Create /var/log/updates
           file:
-            path: /var/log/update
+            path: /var/log/updates
             state: directory
 
         - name: (CentOS) run update report
@@ -39,9 +39,9 @@
             dest: /usr/local/bin/check-apt-updates.sh
             mode: 0755
 
-        - name: (Ubuntu) Create /var/log/update
+        - name: (Ubuntu) Create /var/log/updates
           file:
-            path: /var/log/update
+            path: /var/log/updates
             state: directory
 
         - name: (Ubuntu) run update report
