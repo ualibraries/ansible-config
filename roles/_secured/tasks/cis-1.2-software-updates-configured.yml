@@ -11,13 +11,14 @@
           copy:
             src: usr_local_bin_check-yum-updates.sh
             dest: /usr/local/bin/check-yum-updates.sh
+            mode: 0755
 
         - name: (CentOS) Create /var/log/update
           file:
             path: /var/log/update
             state: directory
 
-        - name: (CentOS) run AIDE report
+        - name: (CentOS) run update report
           cron:
             name: "update report"
             minute: "0"
@@ -36,13 +37,14 @@
           copy:
             src: usr_local_bin_check-apt-updates.sh
             dest: /usr/local/bin/check-apt-updates.sh
+            mode: 0755
 
         - name: (Ubuntu) Create /var/log/update
           file:
             path: /var/log/update
             state: directory
 
-        - name: (Ubuntu) run AIDE report
+        - name: (Ubuntu) run update report
           cron:
             name: "update report"
             minute: "0"
