@@ -15,10 +15,10 @@
         - name: (CentOS) set aide.conf
           copy:
             src: etc_centos_aide.conf
-            dest: /etc/aide.conf
+            dest: /etc/aide/aide.conf
 
         - name: (CentOS) initialize AIDE database
-          command: aide --init
+          command: aide -c /etc/aide/aide.conf --init
 
         - name: move new database to current database
           command: cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
