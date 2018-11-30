@@ -12,6 +12,12 @@
             name: aide
             state: present
 
+        - name: (CentOS) create /etc/aide
+          file: 
+            path: /etc/aide
+            state: directory
+            mode: 0755
+
         - name: (CentOS) set aide.conf
           copy:
             src: etc_centos_aide.conf
