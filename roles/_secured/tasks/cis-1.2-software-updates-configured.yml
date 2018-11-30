@@ -1,0 +1,21 @@
+---
+# file: roles/_secured/tasks/cis-1.1-filesystems-configured.yml
+
+- name: "Check Updates:"
+  block:
+
+    - name: "On a CentOS system:"
+      block:
+
+      when:
+        - ansible_distribution == 'CentOS'
+
+     
+    - name: "On a Ubuntu system:"
+      block:
+
+      when:
+        - ansible_distribution == 'Ubuntu'
+
+  tags:
+    - check_updates
