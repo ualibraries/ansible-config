@@ -4,81 +4,90 @@
 - name: Configure filesystem Integrity Checking
   block:
 
-    - name: Configure CentOS
+    - name: Set AIDE Register 
+      stat:
+        path: /etc/aide
+      register: aide_install_dir
+
+    - name: Check for previously installed AIDE.
       block:
-    
-        - name: (CentOS) install AIDE
-          yum:
-            name: aide
-            state: present
 
-        - name: (CentOS) create /etc/aide
-          file: 
-            path: /etc/aide
-            state: directory
-            mode: 0755
-
-        - name: (CentOS) set aide.conf
-          copy:
-            src: etc_centos_aide.conf
-            dest: /etc/aide/aide.conf
-
-        - name: (CentOS) initialize AIDE database
-          command: aide -c /etc/aide/aide.conf --init
-
-        - name: move new database to current database
-          command: cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
-
-        - name: (CentOS) copy aide.sh file
-          copy:
-            src: usr_local_bin_aide.sh
-            dest: /usr/local/bin/aide.sh 
-
-        - name: (CentOS) run AIDE report
-          cron:
-            name: "AIDE report"
-            minute: "0"
-            hour: "4"
-            weekday: "*"
-            job: "/usr/local/bin/aide.sh > /dev/null 2>&1"
-
-      when:
-        - ansible_distribution == 'CentOS'  
-
-    - name: Configure Ubuntu
-      block:
-    
-        - name: (Ubuntu) install AIDE
-          apt:
-            name: aide
-            state: present
-
-        - name: (Ubuntu) set aide.conf
-          copy:
-            src: etc_ubuntu_aide.conf
-            dest: /etc/aide/aide.conf
-
-        - name: (Ubuntu) initialize AIDE database
-          command: aide -c /etc/aide/aide.conf --init
-
-        - name: (Ubuntu) move new database to current database
-          command: cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
-
-        - name: (Ubuntu) copy aide.sh file
-          copy:
-            src: usr_local_bin_aide.sh
-            dest: /usr/local/bin/aide.sh 
+        - name: Configure CentOS
+          block:
         
-        - name: (Ubuntu) run AIDE report
-          cron:
-            name: "AIDE report"
-            minute: "0"
-            hour: "4"
-            weekday: "*"
-            job: "/usr/local/bin/aide.sh > /dev/null 2>&1"
+            - name: (CentOS) install AIDE
+              yum:
+                name: aide
+                state: present
 
+            - name: (CentOS) create /etc/aide
+              file: 
+                path: /etc/aide
+                state: directory
+                mode: 0755
+
+            - name: (CentOS) set aide.conf
+              copy:
+                src: etc_centos_aide.conf
+                dest: /etc/aide/aide.conf
+
+            - name: (CentOS) initialize AIDE database
+              command: aide -c /etc/aide/aide.conf --init
+
+            - name: move new database to current database
+              command: cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+
+            - name: (CentOS) copy aide.sh file
+              copy:
+                src: usr_local_bin_aide.sh
+                dest: /usr/local/bin/aide.sh 
+
+            - name: (CentOS) run AIDE report
+              cron:
+                name: "AIDE report"
+                minute: "0"
+                hour: "4"
+                weekday: "*"
+                job: "/usr/local/bin/aide.sh > /dev/null 2>&1"
+
+          when:
+            - ansible_distribution == 'CentOS'  
+
+        - name: Configure Ubuntu
+          block:
+        
+            - name: (Ubuntu) install AIDE
+              apt:
+                name: aide
+                state: present
+
+            - name: (Ubuntu) set aide.conf
+              copy:
+                src: etc_ubuntu_aide.conf
+                dest: /etc/aide/aide.conf
+
+            - name: (Ubuntu) initialize AIDE database
+              command: aide -c /etc/aide/aide.conf --init
+
+            - name: (Ubuntu) move new database to current database
+              command: cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+
+            - name: (Ubuntu) copy aide.sh file
+              copy:
+                src: usr_local_bin_aide.sh
+                dest: /usr/local/bin/aide.sh 
+            
+            - name: (Ubuntu) run AIDE report
+              cron:
+                name: "AIDE report"
+                minute: "0"
+                hour: "4"
+                weekday: "*"
+                job: "/usr/local/bin/aide.sh > /dev/null 2>&1"
+
+          when:
+            - ansible_distribution == 'Ubuntu'
       when:
-        - ansible_distribution == 'Ubuntu'  
-
+        - aide_install_dir.stat.exists == False
   tags:
     - secure_filesystem_integrity_checking
