@@ -1,2 +1,16 @@
 [openaz]
 openaz-prd.library.arizona.edu
+
+[aide]
+textmining.library.arizona.edu
+ahsl.library.arizona.edu
+new.library.arizona.edu
+
+[splunkf]
+ezproxy1.library.arizona.edu
+ezproxy2.library.arizona.edu
+ezproxy3.library.arizona.edu
+ezproxy4.library.arizona.edu
+textmining.library.arizona.edu
+ahsl.library.arizona.edu
+new.library.arizona.edu

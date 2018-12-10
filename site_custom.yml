@@ -19,12 +19,10 @@
 #
 
 - name: "Running Custom Plays:"
-  hosts: scratch
-  remote_user: inolan
+  hosts: test
+  remote_user: ansible-admin
   become: yes
   become_user: root
   gather_facts: true
   roles:
     - _secured
-  tags:
-    - secure_filesystem_integrity_checking

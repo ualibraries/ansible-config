@@ -76,7 +76,7 @@
             dest: /usr/local/bin/aide.sh
             mode: 0744
 
-        - name: run AIDE report
+        - name: set AIDE report in cron
           cron:
             name: "AIDE report"
             minute: "0"
