@@ -82,7 +82,7 @@
             minute: "0"
             hour: "4"
             weekday: "*"
-            job: "/usr/local/bin/aide.sh > /dev/null 2>&1"  
+            job: "/usr/local/bin/aide.sh >/dev/null 2>&1"  
 
       when:
         - aide_install_dir.stat.exists == False
