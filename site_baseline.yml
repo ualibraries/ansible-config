@@ -20,14 +20,10 @@
 #
 
 - name: "Applying common configurations to baseline nodes:"
-  hosts: baseline
+  hosts: aide
   remote_user: ansible-admin
   become: yes
   become_user: root
   gather_facts: true
   roles:
-    - _identified
-    - _equipped
-    - _accessible
-    - _synchronized
     - _secured
