@@ -4,6 +4,6 @@
 
 # This file will run an AIDE check, then it will update the new database  
 # and copy it to the baseline database. 
-aide -c /etc/aide/aide.conf --check 
+aide -c /etc/aide/aide.conf --check > /var/log/aide/aide.log
 aide -c /etc/aide/aide.conf --update 
 cp /var/lib/aide/aide.db.new /var/lib/aide/aide.db

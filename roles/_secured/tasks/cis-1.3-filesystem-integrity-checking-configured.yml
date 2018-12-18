@@ -35,23 +35,23 @@
                 dest: /etc/aide/aide.conf
                 mode: 0644
 
-            - name: initialize AIDE database
+            - name: (CentOS) initialize AIDE database
               command: aide -c /etc/aide/aide.conf --init
 
-            - name: move new database to current database
+            - name: (CentOS) move new database to current database
               command: cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
 
-            - name: change file permissions on current db
+            - name: (CentOS) change file permissions on current db
               file:
                 path: /var/lib/aide/aide.db.gz
                 mode: 0644
 
-            - name: change file permissions on new db
+            - name: (CentOS) change file permissions on new db
               file:
                 path: /var/lib/aide/aide.db.new.gz
                 mode: 0644
 
-            - name: copy aide.sh file
+            - name: (CentOS) copy aide.sh file
               copy:
                 src: usr_local_bin_centos_aide.sh
                 dest: /usr/local/bin/aide.sh
@@ -75,23 +75,23 @@
                 dest: /etc/aide/aide.conf
                 mode: 0644
 
-            - name: initialize AIDE database
+            - name: (Ubuntu) initialize AIDE database
               command: aide -c /etc/aide/aide.conf --init
 
-            - name: move new database to current database
+            - name: (Ubuntu) move new database to current database
               command: cp /var/lib/aide/aide.db.new /var/lib/aide/aide.db
 
-            - name: change file permissions on current db
+            - name: (Ubuntu) change file permissions on current db
               file:
                 path: /var/lib/aide/aide.db
                 mode: 0644
 
-            - name: change file permissions on new db
+            - name: (Ubuntu) change file permissions on new db
               file:
                 path: /var/lib/aide/aide.db.new
                 mode: 0644
 
-            - name: copy aide.sh file
+            - name: (Ubuntu) copy aide.sh file
               copy:
                 src: usr_local_bin_ubuntu_aide.sh
                 dest: /usr/local/bin/aide.sh
@@ -99,7 +99,7 @@
 
           when:
             - ansible_distribution == 'Ubuntu'
-            
+
         #Set Cronjob
         - name: set AIDE report in cron
           cron:
