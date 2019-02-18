@@ -1,2 +1,6 @@
 [openaz]
 openaz-tst.library.arizona.edu
+
+[aide]
+ansible-test-host
+ansible-test-host2

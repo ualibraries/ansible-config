@@ -1,0 +1,115 @@
+---
+# file: roles/_secured/tasks/cis-1.3-filesystem-integrity-checking-configured.yml
+
+- name: Configure filesystem Integrity Checking
+  block:
+
+    # Set register for AIDE existing or not
+    - name: Set AIDE Register 
+      stat:
+        path: /etc/aide
+      register: aide_install_dir
+    
+    # This block uses the registered value 
+    - name: Check for previously installed AIDE.
+      block:
+
+        #CentOS Block
+        - name: Configure on CentOS
+          block:
+        
+            - name: (CentOS) install AIDE
+              yum:
+                name: aide
+                state: present
+
+            - name: (CentOS) create /etc/aide
+              file: 
+                path: /etc/aide
+                state: directory
+                mode: 0644
+
+            - name: (CentOS) set aide.conf
+              copy:
+                src: etc_centos_aide.conf
+                dest: /etc/aide/aide.conf
+                mode: 0644
+
+            - name: (CentOS) initialize AIDE database
+              command: aide -c /etc/aide/aide.conf --init
+
+            - name: (CentOS) move new database to current database
+              command: cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+
+            - name: (CentOS) change file permissions on current db
+              file:
+                path: /var/lib/aide/aide.db.gz
+                mode: 0644
+
+            - name: (CentOS) change file permissions on new db
+              file:
+                path: /var/lib/aide/aide.db.new.gz
+                mode: 0644
+
+            - name: (CentOS) copy aide.sh file
+              copy:
+                src: usr_local_bin_centos_aide.sh
+                dest: /usr/local/bin/aide.sh
+                mode: 0744
+
+          when:
+            - ansible_distribution == 'CentOS'
+
+        #Ubuntu Block
+        - name: Configure on Ubuntu
+          block:
+        
+            - name: (Ubuntu) install AIDE
+              apt:
+                name: aide
+                state: present
+
+            - name: (Ubuntu) set aide.conf
+              copy:
+                src: etc_ubuntu_aide.conf
+                dest: /etc/aide/aide.conf
+                mode: 0644
+
+            - name: (Ubuntu) initialize AIDE database
+              command: aide -c /etc/aide/aide.conf --init
+
+            - name: (Ubuntu) move new database to current database
+              command: cp /var/lib/aide/aide.db.new /var/lib/aide/aide.db
+
+            - name: (Ubuntu) change file permissions on current db
+              file:
+                path: /var/lib/aide/aide.db
+                mode: 0644
+
+            - name: (Ubuntu) change file permissions on new db
+              file:
+                path: /var/lib/aide/aide.db.new
+                mode: 0644
+
+            - name: (Ubuntu) copy aide.sh file
+              copy:
+                src: usr_local_bin_ubuntu_aide.sh
+                dest: /usr/local/bin/aide.sh
+                mode: 0744  
+
+          when:
+            - ansible_distribution == 'Ubuntu'
+
+        #Set Cronjob
+        - name: set AIDE report in cron
+          cron:
+            name: "AIDE report"
+            minute: "0"
+            hour: "4"
+            weekday: "*"
+            job: "/usr/local/bin/aide.sh >/dev/null 2>&1"
+              
+      when:
+        - aide_install_dir.stat.exists == False
+  tags:
+    - secure_filesystem_integrity_checking
